@@ -15,7 +15,7 @@ Provides ideas for batch testing, scoring, and comparison logic. Very relevant t
 ## 2. Microsoft PromptBench  
 https://github.com/microsoft/promptbench
 
-The prompt benchmarking framework from Microsoft. It can handle many prompts at once, and we also need to test 30+ prompts, so it fits what we're doing really well. The structure is clear and easy to follow, so it's a strong reference for building our large-scale testing workflow.
+The prompt benchmarking framework from Microsoft. It can handle many prompts at once, and we also need to test 30+ prompts, so it may fits what we're doing really well.
 
 ## 3. lm-evaluation-harness
 https://github.com/EleutherAI/lm-evaluation-harness/tree/main/tests
