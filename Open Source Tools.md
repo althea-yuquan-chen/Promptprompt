@@ -24,3 +24,24 @@ I think this basically shows us “this is what a proper evaluation system looks
 
 # Category B: Text Evaluation Tools  
 These tools directly support us comparing outputs generated before and after prompt optimization. Then compute similarity scores, measure quality differences, and run statistical tests.
+
+## 1. sentence-transformers
+https://github.com/huggingface/sentence-transformers/tree/main
+
+Converts text into embeddings and computes cosine similarity between outputs. Measures semantic closeness between “before” and “after” responses.
+Perfect for evaluating how much the optimized prompt improves or changes the meaning.  
+
+## 2. bert_score
+https://github.com/Tiiiger/bert_score
+
+Computes similarity using contextual embeddings， produces precision/recall/F1 scores for text comparison. Use comparing optimized outputs with original outputs.
+
+## 3.rouge ---- (Information Overlap Metric)
+https://github.com/pltrdy/rouge
+
+Measure how much information overlaps between two texts. Evaluates how much key content appears in both outputs. Maybe helps us check whether the optimized prompt produces more complete or more informative outputs
+
+## 4.textstat  ---- (Readability Metrics)
+https://github.com/textstat/textstat
+
+Evaluates how easy a text is to understand based on vocabulary and sentence complexity. May help quantify whether optimized prompts produce more structured and easier-to-read outputs.
