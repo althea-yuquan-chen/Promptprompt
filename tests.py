@@ -33,15 +33,14 @@ if __name__ == "__main__":
     # Example outputs — replace with real outputs later
     before_output = """AI helps with writing emails."""
     after_output = """AI systems can assist users in drafting emails effectively."""
-    
-    print("=== Running Evaluation Tests ===")
-    sem_sim = get_sim_score(ref, gen)
-    print(f"Sem Sim (ST): {sem_sim:.4f}")
 
-    bert_f1 = bert_f1_val(ref, gen)
-    print("BERT F1:", bert_f1)
+sem_sim = get_sim_score(before_output, after_output) 
+print("Semantic Similarity (Sentence-Transformers):", sem_sim)
 
-    rouge_l = calculate_rouge_l(ref, gen)
-    print(f"ROUGE-L F1: {rouge_l:.4f}\n")
-    
-    print("Done.")
+    bert_f1 = bert_score_eval(before_output, after_output)
+    print("BERTScore F1:", bert_f1)
+
+    rouge_l = rouge_eval(before_output, after_output)
+    print("ROUGE-L F1:", rouge_l)
+
+    print("\nAll metrics completed.")
