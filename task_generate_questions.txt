@@ -1,0 +1,10 @@
+CURRENT TASK: Execute STEP 2 - Ask clarifying questions
+
+User's draft prompt: {draft_prompt}
+
+Your task:
+- Analyze the draft prompt carefully
+- Identify what information is missing or unclear
+- Ask user clarification questions to best understanding what they want to achieve
+
+Return only the questions, numbered.

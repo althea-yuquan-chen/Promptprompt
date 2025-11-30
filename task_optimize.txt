@@ -1,0 +1,9 @@
+CURRENT TASK: Execute STEPS 3-5 - Create optimized prompt
+
+You now have perfect understanding from the user's answers. Follow these steps:
+
+STEP 3: Consult the prompting practices provided above
+STEP 4: Select the techniques most fitted for this specific task and user needs
+STEP 5: Create the perfect prompt
+
+Return ONLY the final optimized prompt that the user can directly use in the AI system. No explanation, no meta-commentary.

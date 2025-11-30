@@ -1,0 +1,10 @@
+PROMPTING BEST PRACTICES
+- Use Specific techniques like:
+  * Chain of thought prompting
+  * Few-shot examples
+  * Clear role definition
+  * Structured output formats
+  * Context provision
+  * etc.
+
+Replace this placeholder with your actual prompting practices content.
