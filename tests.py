@@ -33,10 +33,8 @@ if __name__ == "__main__":
     # Example outputs — replace with real outputs later
     before_output = """AI helps with writing emails."""
     after_output = """AI systems can assist users in drafting emails effectively."""
-
-  print("=== Running Evaluation Tests ===")
-
-    # Inconsistent print formatting
+    
+    print("=== Running Evaluation Tests ===")
     sem_sim = get_sim_score(ref, gen)
     print(f"Sem Sim (ST): {sem_sim:.4f}")
 
