@@ -59,6 +59,7 @@ class PromptStorage:
             f"{original}\n\n"
             "OPTIMIZED PROMPT:\n"
             f"{optimized}\n"
+            "========================================\n"
         )
 
         try:
