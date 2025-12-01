@@ -1,50 +1,70 @@
 # still need to check，not final version
 import os
-import json
 from datetime import datetime
+from pathlib import Path
 
 class StorageError(Exception):
-    """Custom error for storage failures."""
     pass
 
 
 class PromptStorage:
     """
-    Handles saving optimized + original prompts into the user's local machine.
-    Directory: ~/.promptprompt/prompts/
+    Storage component for PromptPrompt.
+    Saves ONE .txt file per session inside ~/.promptprompt/prompts/
     """
 
     def __init__(self, base_dir=None):
-        # Default directory: ~/.promptprompt/prompts/
-        self.base_dir = base_dir or os.path.expanduser("~/.promptprompt/prompts/")
+        # Directory: ~/.promptprompt/prompts/
+        self.base_dir = Path(base_dir) if base_dir else Path.home() / ".promptprompt" / "prompts"
+
         try:
-            os.makedirs(self.base_dir, exist_ok=True)
+            self.base_dir.mkdir(parents=True, exist_ok=True)
         except Exception as e:
             raise StorageError(f"Failed to create storage directory: {e}")
 
-    def save_prompts(self, prompt_pair):
+    def save_prompts(self, prompt_pair: dict) -> Path:
         """
-        Save the prompts to a timestamped JSON file.
-
-        prompt_pair = {
-            "original": "...",
-            "optimized": "...",
-            "timestamp": "2025-01-01T12:00:00"
-        }
+        Saves a session file:
+            YYYY-MM-DD-HHMMSS-session.txt
+        Returns a Path object.
         """
 
-        if not isinstance(prompt_pair, dict):
-            raise StorageError("Invalid prompt data. Expected dict.")
+        # Validate input
+        required_keys = {"original", "optimized", "timestamp"}
+        if not required_keys.issubset(prompt_pair.keys()):
+            raise StorageError("prompt_pair missing required fields")
 
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        filename = f"prompt_{timestamp}.json"
-        file_path = os.path.join(self.base_dir, filename)
+        # Extract fields
+        original = prompt_pair["original"]
+        optimized = prompt_pair["optimized"]
+        timestamp_str = prompt_pair["timestamp"]
+
+        # Parse timestamp or fallback
+        try:
+            dt = datetime.fromisoformat(timestamp_str)
+        except:
+            dt = datetime.now()
+
+        # File name format: 2025-11-28-143022-session.txt
+        filename = dt.strftime("%Y-%m-%d-%H%M%S-session.txt")
+        file_path = self.base_dir / filename
+
+        # Build text content
+        content = (
+            "========================================\n"
+            "PromptPrompt Session\n"
+            f"Date: {dt.strftime('%Y-%m-%d %H:%M:%S')}\n"
+            "========================================\n\n"
+            "ORIGINAL PROMPT:\n"
+            f"{original}\n\n"
+            "OPTIMIZED PROMPT:\n"
+            f"{optimized}\n"
+        )
 
         try:
-            with open(file_path, "w", encoding="utf-8") as f:
-                json.dump(prompt_pair, f, ensure_ascii=False, indent=4)
+            file_path.write_text(content, encoding="utf-8")
         except Exception as e:
-            raise StorageError(f"Failed to write prompt file: {e}")
+            raise StorageError(f"Failed to write file: {e}")
 
         return file_path
 
@@ -53,9 +73,9 @@ class PromptStorage:
 if __name__ == "__main__":
     storage = PromptStorage()
     test_data = {
-        "original": "Write a poem about AI.",
-        "optimized": "Write a detailed poem about AI in a humorous tone.",
-        "timestamp": datetime.now().isoformat()
+        "original": "write a blog post",
+        "optimized": "Write a 500-word blog post about AI tools...",
+        "timestamp": "2025-11-28T14:30:22"
     }
     path = storage.save_prompts(test_data)
     print("Saved to:", path)
