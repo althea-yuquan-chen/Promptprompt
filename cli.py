@@ -9,11 +9,11 @@ from datetime import datetime
 class CLI:
     # Console manager class for I/O - handles all user interaction
 
-    def __init__(self): #need to add the hashed parameters below later
+    def __init__(self, optimizer): #need to add the hashed parameters below later
         # This runs when you create a CLI object
         self.console = Console()
         #* self.config = config
-        #* self.optimizer = optimizer
+        self.optimizer = optimizer
         #* self.storage = storage
         #* self.launcher = launcher
         self.console.print("[bold blue] CLI Initialized![/bold blue]")
@@ -29,6 +29,7 @@ class CLI:
         # Generate questions from optimizer
         #* questions = self.optimizer.clarify(draft_prompt)
         # These are the hard-coded questions to test for now. Will remove during integration:
+        
         questions = [
             "What is the main topic?",
             "Who is your target audience?",

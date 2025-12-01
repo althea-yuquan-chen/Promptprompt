@@ -1,0 +1,26 @@
+# --- 安全隐私 (绝对不能传) ---
+.env
+.env.local
+
+# --- 数据库文件 ---
+*.db
+*.sqlite3
+users.db
+
+# --- Python 缓存和编译文件 (垃圾文件) ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- 虚拟环境 ---
+.venv/
+venv/
+env/
+
+# --- IDE 配置 (VS Code 的个人设置) ---
+.vscode/
+.idea/
+
+# --- 操作系统生成的垃圾文件 ---
+.DS_Store
+Thumbs.db
