@@ -48,10 +48,17 @@ class CLI:
 
         # Ask user which AI tool first
         model_choice = self.get_ai_choice()
-        self.console.print(f"\n[green]✓ Selected: {model_choice.upper()}[/green]")
 
         # Create launcher with their choice
         self.launcher = ChatLauncher(default_model=model_choice)
+
+        # Check if installed
+        if not self.launcher.check_installed():
+            self.console.print(f"\n[red]Error: {self.launcher.chat_tool} is not installed[/red]")
+            self.console.print(f"{self.launcher._get_install_instructions(self.launcher.chat_tool)}")
+            return
+
+        self.console.print(f"\n[green]✓ {model_choice.upper()} is ready[/green]")
 
         # Get the draft prompt (either from parameter or ask user)
         if draft_prompt is None:
@@ -73,7 +80,7 @@ class CLI:
         improved_prompt = self.refinement_loop(draft_prompt, questions, answers)
 
         # User approved if we get here
-        self.console.print("\n[bold green] Prompt Approved! Moving forward...[/bold green]")
+        self.console.print("\n[bold green]Prompt Approved![/bold green]")
 
         # Save prompts
         self.console.print("\n Saving prompts...")
@@ -87,15 +94,8 @@ class CLI:
 
         # Launch AI Session
         #* self.launcher.launch(improved_prompt)
-        self.console.print(f"\n Launching {model_choice.upper()} with your optimized prompt...")
-        # Add error handling around the launch
-        if self.launcher:
-            try:
-                self.launcher.launch(improved_prompt)
-            except Exception as e:
-                self.console.print(f"[red]Error launching {model_choice}: {e}[/red]")
-        else:
-            self.console.print("[yellow]No launcher configured - skipping AI session[/yellow]")
+        self.console.print(f"\nLaunching {model_choice.upper()}...")
+        self.launcher.launch(improved_prompt)
 
         # Exit message
         self.console.print("\n" + "="*60)
