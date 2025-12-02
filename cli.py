@@ -10,21 +10,12 @@ from launcher import ChatLauncher
 class CLI:
     # Console manager class for I/O - handles all user interaction
 
-<<<<<<< HEAD
     def __init__(self, optimizer, storage, launcher): #need to add the hashed parameters below later
         # This runs when you create a CLI object
         self.console = Console()
         # self.config = config
         self.optimizer = optimizer
         self.storage = storage
-=======
-    def __init__(self, launcher=None): #need to add the hashed parameters below later
-        # This runs when you create a CLI object
-        self.console = Console()
-        #* self.config = config
-        #* self.optimizer = optimizer
-        #* self.storage = storage
->>>>>>> 75ead7b8d023b786e20650a1b3985afb142412d4
         self.launcher = launcher
         self.console.print("[bold blue] CLI Initialized![/bold blue]")
 
@@ -67,13 +58,13 @@ class CLI:
             draft_prompt = self.get_draft_prompt()
 
         # Generate questions from optimizer
-        #* questions = self.optimizer.clarify(draft_prompt)
+        questions = self.optimizer.clarify(draft_prompt)
         # These are the hard-coded questions to test for now. Will remove during integration:
-        questions = [
-            "What is the main topic?",
-            "Who is your target audience?",
-            "What tone should it have?"
-        ]
+        # questions = [
+        #     "What is the main topic?",
+        #     "Who is your target audience?",
+        #     "What tone should it have?"
+        # ]
 
         # Ask questions
         answers = self.collect_answers(questions)
@@ -85,14 +76,14 @@ class CLI:
         self.console.print("\n[bold green] Prompt Approved! Moving forward...[/bold green]")
 
         # Save prompts
-        # self.console.print("\n Saving prompts...")
-        #* prompt_pair = {
-        #*     "original": draft_prompt,
-        #*     "optimized": improved_prompt,
-        #*     "timestamp": datetime.now().isoformat()
-        #* }
-        #* file_path = self.storage.save_prompts(prompt_pair)
-        #* self.console.print(f"✓ Saved to: {file_path}")
+        self.console.print("\n Saving prompts...")
+        prompt_pair = {
+            "original": draft_prompt,
+            "optimized": improved_prompt,
+            "timestamp": datetime.now().isoformat()
+        }
+        file_path = self.storage.save_prompts(prompt_pair)
+        self.console.print(f"✓ Saved to: {file_path}")
 
         # Launch AI Session
         #* self.launcher.launch(improved_prompt)
@@ -202,11 +193,13 @@ class CLI:
 
             if refinements:
                 # If there are refinements, add them to the prompt
-                refinement_text = " Also: " + ", ".join(refinements)
-                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
+                # refinement_text = " Also: " + ", ".join(refinements)
+                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
+                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
             else:
                 # First time, no refinements yet
-                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
+                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers)
+                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
 
             self.show_comparison(draft_prompt, improved_prompt)
 
@@ -237,10 +230,4 @@ class CLI:
         return refinement.strip()
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-=======
-    # Create a CLI object
-    cli = CLI()
-    # Run it
->>>>>>> 75ead7b8d023b786e20650a1b3985afb142412d4
     cli.run()
