@@ -9,10 +9,10 @@ from datetime import datetime
 class CLI:
     # Console manager class for I/O - handles all user interaction
 
-    def __init__(self, config, optimizer, storage, launcher): #need to add the hashed parameters below later
+    def __init__(self, optimizer, storage, launcher): #need to add the hashed parameters below later
         # This runs when you create a CLI object
         self.console = Console()
-        self.config = config
+        # self.config = config
         self.optimizer = optimizer
         self.storage = storage
         self.launcher = launcher
@@ -191,6 +191,5 @@ class CLI:
         return refinement.strip()
 
 if __name__ == "__main__":
-    cli = CLI(config, optimizer, storage, launcher)
     cli.run()
 

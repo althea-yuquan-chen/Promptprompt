@@ -5,9 +5,11 @@ from dotenv import load_dotenv
 
 # Import your modules
 from api_client import ModelConnector
-from user_auth import UserAuth
+# from user_auth import UserAuth
 from cli import CLI
 from optimizer import PromptOptimizer
+from launcher import ChatLauncher;
+from storage import Storage;
 
 # Path to the environment configuration file
 ENV_PATH = ".env"
@@ -119,6 +121,8 @@ def main():
     try:
         # Pass the initialized API client to the optimizer
         optimizer = PromptOptimizer(api_client=api)
+        storage = Storage()
+        launcher = ChatLauncher()
     except Exception as e:
         print(f"[Error] Failed to initialize optimizer: {e}")
         print("Hint: Ensure you have a 'prompts' folder with .txt files.")
@@ -128,7 +132,7 @@ def main():
     print("[System] Launching User Interface...\n")
     try:
         # Pass the optimizer to the CLI
-        cli_app = CLI(optimizer=optimizer)
+        cli_app = CLI(optimizer=optimizer, storage=storage, launcher=launcher)
         cli_app.run()
     except KeyboardInterrupt:
         print("\n[System] Program interrupted by user.")
