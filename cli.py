@@ -28,8 +28,7 @@ class CLI:
 
         # Generate questions from optimizer
         #* questions = self.optimizer.clarify(draft_prompt)
-        # These are the hard-coded questions to test for now. Will remove during integration:
-        
+        # These are the hard-coded questions to test for now. Will remove during integration:      
         questions = [
             "What is the main topic?",
             "Who is your target audience?",
