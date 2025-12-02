@@ -5,38 +5,75 @@
 from rich.console import Console
 from rich.panel import Panel
 from datetime import datetime
+from launcher import ChatLauncher
 
 class CLI:
     # Console manager class for I/O - handles all user interaction
 
+<<<<<<< HEAD
     def __init__(self, optimizer, storage, launcher): #need to add the hashed parameters below later
         # This runs when you create a CLI object
         self.console = Console()
         # self.config = config
         self.optimizer = optimizer
         self.storage = storage
+=======
+    def __init__(self, launcher=None): #need to add the hashed parameters below later
+        # This runs when you create a CLI object
+        self.console = Console()
+        #* self.config = config
+        #* self.optimizer = optimizer
+        #* self.storage = storage
+>>>>>>> 75ead7b8d023b786e20650a1b3985afb142412d4
         self.launcher = launcher
         self.console.print("[bold blue] CLI Initialized![/bold blue]")
+
+    def get_ai_choice(self):
+        #Ask user which AI tool they want to use
+        self.console.print("\n[bold cyan]Which AI tool would you like to use?[/bold cyan]")
+        self.console.print("  1. Claude")
+        self.console.print("  2. Gemini")
+        self.console.print("  3. GPT-4")
+        self.console.print("  4. Codex")
+
+        choice = input("\nEnter your choice (1-4): ").strip()
+
+        model_map = {
+            "1": "claude",
+            "2": "gemini",
+            "3": "gpt-4",
+            "4": "codex"
+        }
+
+        while choice not in model_map:
+            self.console.print("[red]Please enter 1, 2, 3, or 4[/red]")
+            choice = input("Enter your choice (1-4): ").strip()
+
+        return model_map[choice]
 
     def run(self, draft_prompt=None):
         # Main method - this is what starts everything
         self.console.print("[bold magenta] Welcome to PromptPrompt! [/bold magenta]")
 
-        # Get the draft prompt (either from parameter or ask user)
-        # 1. API key check (REQUIRED)
-        api_key = self.config.get_api_key()
-        if not api_key:
-            api_key = self.config.setup_first_time()
+        # Ask user which AI tool first
+        model_choice = self.get_ai_choice()
+        self.console.print(f"\n[green]✓ Selected: {model_choice.upper()}[/green]")
 
+        # Create launcher with their choice
+        self.launcher = ChatLauncher(default_model=model_choice)
+
+        # Get the draft prompt (either from parameter or ask user)
+        if draft_prompt is None:
+            draft_prompt = self.get_draft_prompt()
 
         # Generate questions from optimizer
-        questions = self.optimizer.clarify(draft_prompt)
-        # These are the hard-coded questions to test for now. Will remove during integration:      
-        # questions = [
-        #     "What is the main topic?",
-        #     "Who is your target audience?",
-        #     "What tone should it have?"
-        # ]
+        #* questions = self.optimizer.clarify(draft_prompt)
+        # These are the hard-coded questions to test for now. Will remove during integration:
+        questions = [
+            "What is the main topic?",
+            "Who is your target audience?",
+            "What tone should it have?"
+        ]
 
         # Ask questions
         answers = self.collect_answers(questions)
@@ -49,23 +86,32 @@ class CLI:
 
         # Save prompts
         # self.console.print("\n Saving prompts...")
-        prompt_pair = {
-             "original": draft_prompt,
-             "optimized": improved_prompt,
-             "timestamp": datetime.now().isoformat()
-         }
-        file_path = self.storage.save_prompts(prompt_pair)
-        self.console.print(f"✓ Saved to: {file_path}")
+        #* prompt_pair = {
+        #*     "original": draft_prompt,
+        #*     "optimized": improved_prompt,
+        #*     "timestamp": datetime.now().isoformat()
+        #* }
+        #* file_path = self.storage.save_prompts(prompt_pair)
+        #* self.console.print(f"✓ Saved to: {file_path}")
 
         # Launch AI Session
-        self.console.print("\n Launching AI chat session...")
-        self.launcher.launch(improved_prompt)
+        #* self.launcher.launch(improved_prompt)
+        self.console.print(f"\n Launching {model_choice.upper()} with your optimized prompt...")
+        # Add error handling around the launch
+        if self.launcher:
+            try:
+                self.launcher.launch(improved_prompt)
+            except Exception as e:
+                self.console.print(f"[red]Error launching {model_choice}: {e}[/red]")
+        else:
+            self.console.print("[yellow]No launcher configured - skipping AI session[/yellow]")
 
         # Exit message
         self.console.print("\n" + "="*60)
         self.console.print("[bold green] PromptPrompt Complete![/bold green]")
         self.console.print("\n[dim]Summary:[/dim]")
         self.console.print(f"   • Original prompt optimized")
+        self.console.print(f"   • AI tool selected: {model_choice.upper()}")
         self.console.print(f"   • Prompts saved to ~/.promptprompt/prompts/")
         self.console.print(f"   • AI session launched with optimized prompt")
         self.console.print("\n[dim]Returning terminal control to you...[/dim]")
@@ -191,5 +237,10 @@ class CLI:
         return refinement.strip()
 
 if __name__ == "__main__":
+<<<<<<< HEAD
+=======
+    # Create a CLI object
+    cli = CLI()
+    # Run it
+>>>>>>> 75ead7b8d023b786e20650a1b3985afb142412d4
     cli.run()
-
