@@ -36,13 +36,13 @@ class ModelConnector:
         #     self.anthropic_client = None
 
         # Initialize Gemini
-        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
-        if self.gemini_api_key:
-            genai.configure(api_key=self.gemini_api_key)
-            self.gemini_available = True
-        else:
-            print("Warning: GEMINI_API_KEY not found. Free tier unavailable.")
-            self.gemini_available = False
+        # self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        # if self.gemini_api_key:
+        #     genai.configure(api_key=self.gemini_api_key)
+        #     self.gemini_available = True
+        # else:
+        #     print("Warning: GEMINI_API_KEY not found. Free tier unavailable.")
+        #     self.gemini_available = False
 
         # Initialize Groq
         self.groq_api_key = os.getenv("GROQ_API_KEY")
