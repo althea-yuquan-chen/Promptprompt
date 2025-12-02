@@ -39,7 +39,7 @@ class PromptOptimizer:
         prompt_file = self.prompts_dir / filename
 
         try:
-            with open(prompt_file, 'r') as f:
+            with open(prompt_file, 'r', encoding='utf-8') as f:
                 return f.read().strip()
         except FileNotFoundError:
             raise OptimizationError(f"Prompt file not found: {filename}")
