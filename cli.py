@@ -27,13 +27,13 @@ class CLI:
             draft_prompt = self.get_draft_prompt()
 
         # Generate questions from optimizer
-        #* questions = self.optimizer.clarify(draft_prompt)
+        questions = self.optimizer.clarify(draft_prompt)
         # These are the hard-coded questions to test for now. Will remove during integration:      
-        questions = [
-            "What is the main topic?",
-            "Who is your target audience?",
-            "What tone should it have?"
-        ]
+        # questions = [
+        #     "What is the main topic?",
+        #     "Who is your target audience?",
+        #     "What tone should it have?"
+        # ]
 
         # Ask questions
         answers = self.collect_answers(questions)
