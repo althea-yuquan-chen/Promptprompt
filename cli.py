@@ -148,16 +148,18 @@ class CLI:
             # Generate improved prompt
             # For now, using fake, improved prompt.
             #* when integrating take out if/else statement below and add:
-            #* improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
+            # improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
             # need to add refinements as the 4th parameter so that is included in the prompt if user want it
 
             if refinements:
                 # If there are refinements, add them to the prompt
-                refinement_text = " Also: " + ", ".join(refinements)
-                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
+                # refinement_text = " Also: " + ", ".join(refinements)
+                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
+                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
             else:
                 # First time, no refinements yet
-                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
+                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers)
+                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
 
             self.show_comparison(draft_prompt, improved_prompt)
 
