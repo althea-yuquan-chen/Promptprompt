@@ -1,10 +1,638 @@
-PROMPTING BEST PRACTICES
-- Use Specific techniques like:
-  * Chain of thought prompting
-  * Few-shot examples
-  * Clear role definition
-  * Structured output formats
-  * Context provision
-  * etc.
+COMPREHENSIVE PROMPT ENGINEERING BEST PRACTICES GUIDE
 
-Replace this placeholder with your actual prompting practices content.
+====================
+PART 1: CORE PRINCIPLES
+====================
+
+1. Be Explicit with Instructions
+
+Modern LLMs respond best to clear, explicit instructions. Never assume the model will infer your intent—state it directly.
+
+✅ GOOD:
+Classify the following customer review as POSITIVE, NEUTRAL, or NEGATIVE.
+Return only the single word classification, nothing else.
+
+Review: "The product arrived on time and works perfectly."
+Classification:
+
+❌ POOR:
+What do you think about this review?
+"The product arrived on time and works perfectly."
+
+Why This Works:
+• Eliminates ambiguity
+• Model doesn't waste tokens guessing intent
+• Output format is predetermined
+• Reduces hallucinations
+
+2. Clarity Over Complexity
+
+Prompts should be concise and easy to understand. If a prompt confuses you, it will confuse the model.
+
+Test: Read your prompt aloud. Does it sound clear? Would another person understand it?
+
+3. Provide Context and Motivation
+
+Explaining why helps the model understand your goals better and tailor responses appropriately.
+
+EXAMPLE:
+You are writing educational content for high school students learning chemistry for the first time. Explain ionic bonding in simple terms they can understand, avoiding complex mathematical equations. Focus on real-world examples they encounter daily (like salt, batteries, magnets).
+
+Why: This context helps Claude/ChatGPT tailor the explanation to the right complexity level and choose appropriate examples.
+
+4. Be Specific About Desired Output
+
+Specify format, style, length, tone, and structure.
+
+✅ GOOD:
+Generate a 2-paragraph blog post about machine learning for a non-technical audience. Use everyday language and include 2 real-world examples. Write in an engaging, conversational tone. Format: Markdown with one paragraph per section.
+
+❌ POOR:
+Write about machine learning.
+
+====================
+PART 2: FOUNDATIONAL TECHNIQUES
+====================
+
+##Zero-Shot Prompting
+
+Simple task description without examples. Works for straightforward tasks.
+
+WHEN TO USE: Simple classification, direct questions, well-defined tasks
+
+EXAMPLE:
+Classify this movie review as positive, neutral, or negative:
+"The cinematography was breathtaking, but the plot felt predictable."
+Classification:
+
+One-Shot & Few-Shot Prompting
+
+Provide examples of desired input-output patterns. Few-shot is typically 3-5 examples.
+
+FEW-SHOT BEST PRACTICES:
+• Use 3-5 examples minimum
+• Mix up the order (don't put all HIGH-priority examples first)
+• Include edge cases
+• Ensure examples are high-quality and relevant
+• For critical tasks, test accuracy with 6+ examples first
+
+EXAMPLE:
+Classify customer support tickets by urgency:
+
+Example 1:
+Ticket: "My account is locked and I can't log in."
+Urgency: HIGH
+
+Example 2:
+Ticket: "Can you help me understand the features?"
+Urgency: LOW
+
+Example 3:
+Ticket: "The app crashes when I upload photos."
+Urgency: HIGH
+
+Example 4:
+Ticket: "Do you have a dark mode?"
+Urgency: LOW
+
+Now classify:
+Ticket: "Website is completely down for me."
+Urgency:
+
+
+##System Prompting / Role Definition
+
+Define the model's role, personality, and behavior before the main task.
+
+STRUCTURE:
+You are [ROLE]. You [RESPONSIBILITIES]. Your tone is [TONE].
+When responding, [CONSTRAINTS/CONSIDERATIONS].
+
+[MAIN TASK]
+
+EFFECTIVE ROLES:
+Confrontational, Descriptive, Direct, Formal, Humorous, Influential, Informal, Inspirational, Persuasive, Expert, Teacher, Coach, Analyst, Creative Writer
+
+EXAMPLE:
+You are a technical documentation expert writing for software developers.
+You explain concepts clearly and include practical code examples.
+Your tone is professional but approachable.
+
+Explain how REST APIs handle authentication for developers new to the concept.
+
+
+##Contextual Prompting
+
+Provide specific background information relevant to the task.
+
+EXAMPLE:
+Context: You are writing documentation for a SaaS product used by enterprise IT teams. The audience has technical expertise but limited experience with this specific tool.
+
+Task: Write a guide for setting up single sign-on (SSO) authentication. Keep it at an intermediate technical level and focus on enterprise requirements.
+
+##Structured Output Formats
+
+Request specific formats (JSON, XML, Markdown, CSV) for consistent, parseable responses.
+
+BENEFIT: Reduces hallucinations, enables downstream processing, ensures consistency
+
+EXAMPLE:
+Extract information from this support ticket and return as JSON:
+
+Ticket: "Hi, I've been trying to reset my password for 2 days. Nothing happens when I click the reset button."
+
+Return this JSON structure:
+{
+"issue": "[brief description]",
+"severity": "[HIGH/MEDIUM/LOW]",
+"category": "[category]",
+"action_required": "[next step]"
+}
+
+====================
+PART 3: ADVANCED PROMPTING METHODS
+====================
+
+##Chain of Thought (CoT) Prompting
+
+What It Does: Instructs the model to break complex problems into intermediate reasoning steps.
+
+Why It Works: Improves reasoning accuracy, shows work, better for logic/math
+
+###ZERO-SHOT CoT:
+Solve this step by step:
+
+If I was 4 years old when my sister was twice my age, and I'm now 20, how old is my sister?
+
+Think step by step.
+
+
+###FEW-SHOT CoT:
+Q: When my brother was 2, I was double his age. Now I'm 40. How old is my brother?
+
+A: When my brother was 2, I was 4 years old.
+The age difference is 4 - 2 = 2 years.
+Now I'm 40, so he's 40 - 2 = 38 years old.
+
+Q: When I was 3, my partner was 3 times my age. Now I'm 20. How old is my partner?
+
+A:
+
+###CoT Best Practices:
+• Place answer after reasoning steps
+• Use temperature = 0 for CoT (greedy decoding)
+• Works better with few-shot examples
+• Excellent for math, logic, multi-step reasoning
+• Increases tokens used (watch for costs)
+
+
+
+###Self-Consistency Prompting
+
+Generate multiple reasoning paths with high temperature, select the most common answer.
+
+PROCESS:
+1. Run CoT prompt 3-5 times with high temperature (0.7-0.9)
+2. Extract final answer from each run
+3. Select the most frequently occurring answer
+4. Use that as your final result
+
+TRADE-OFFS:
+✅ Higher accuracy on complex reasoning
+❌ Multiple API calls = higher cost
+❌ Slower response time
+
+Best for: Critical decisions, important classifications
+
+###Step-Back Prompting
+
+First answer a general question, then use that answer to solve the specific problem.
+
+WHY IT WORKS: Activates relevant background knowledge before tackling specific task
+
+EXAMPLE:
+STEP 1 - General Question:
+Based on popular first-person shooter games, what are 5 key settings that make engaging level storylines?
+
+STEP 2 - Specific Question:
+Using the settings you described, create a compelling storyline for a new game level that's both challenging and immersive.
+
+USE CASES: Creative writing, conceptual understanding, reducing biases, complex problems
+
+##Tree of Thoughts (ToT)
+
+Explore multiple reasoning paths simultaneously instead of single linear chain.
+
+BEST FOR: Complex problems with multiple solution branches, strategic planning, creative problem-solving
+
+STRUCTURE:
+Problem: [Complex task]
+
+Approach 1: [Path A reasoning]
+Approach 2: [Path B reasoning]
+Approach 3: [Path C reasoning]
+
+Which approach is most promising? Explain why.
+
+##ReAct (Reason + Act)
+
+Combine reasoning with taking actions (searches, calculations, code execution).
+
+PATTERN:
+Thought: [Reasoning about problem]
+Action: [What to do - search, calculate, code]
+Observation: [Result of action]
+Thought: [Updated reasoning]
+Action: [Next action]
+...
+Final Answer: [Solution]
+
+##Prompt Chaining
+
+Break complex tasks into sequential multi-stage prompts where each output feeds into the next.
+
+EXAMPLE - Blog Post Creation:
+Stage 1 (Research):
+"Research top 5 AI trends. Return as bulleted list with brief descriptions."
+
+Stage 2 (Outline):
+"Create blog outline based on these trends: [Output from Stage 1]"
+
+Stage 3 (Write):
+"Write blog post following this outline: [Output from Stage 2]"
+
+Stage 4 (Edit):
+"Edit for clarity and engagement: [Output from Stage 3]"
+
+BENEFITS:
+• Better quality outputs
+• More control over intermediate steps
+• Easier to identify problems
+• Better QA and validation
+
+====================
+PART 4: CLAUDE-SPECIFIC BEST PRACTICES
+====================
+
+1. Use XML Tags for Organization
+
+Claude excels with XML tags for clear structure and instruction organization.
+
+EXAMPLE:
+<role>
+You are a customer service representative.
+Your tone should be helpful and professional.
+</role>
+
+<email>
+Respond to this customer email: Subject: Order #12345 - Wrong Item Received I ordered a blue sweater but received a red one. What should I do?
+</email>
+
+<response_format>
+Provide a helpful response that acknowledges the problem and offers 3 solutions.
+</response_format>
+
+BENEFITS:
+• Clearer structure for complex prompts
+• Claude interprets intent more accurately
+• Good for organizing context, tasks, constraints
+
+2. Be Explicit with Instructions
+
+Claude 4.x responds well to explicit instructions. State exactly what you want.
+
+CLAUDE EXAMPLE:
+You are an AI assistant designed to analyze customer feedback.
+Analyze the following feedback and:
+
+1. Identify the main issue
+2. Assess sentiment (positive/negative/neutral)
+3. Suggest a response
+
+Do not speculate or add information not present in the feedback.
+
+3. Add Context and Motivation
+
+Explaining why behavior is important helps Claude understand your goals.
+
+EXAMPLE:
+Context: I'm building a learning management system for high school teachers.
+
+Task: Design 5 multiple-choice questions about photosynthesis for 9th graders.
+
+Why: Questions will be used to assess student understanding, so they should test conceptual knowledge, not just memorization. Mix difficulty levels.
+
+4. Use Prefilled Responses
+
+Provide the beginning of the response to guide Claude's output format.
+
+EXAMPLE:
+User: Generate 3 test users in JSON format.
+
+System prepares response starting with:
+[
+{
+"id": 1,
+"name": "..."
+
+Claude will continue following this format.
+
+5. Give Time to Think
+
+Request step-by-step reasoning with extended thinking or explicit reasoning tags.
+
+Please think through this step-by-step within <thinking> tags before providing your final answer.
+
+====================
+PART 5: CHATGPT & OPENAI BEST PRACTICES
+====================
+
+1. Be Clear and Specific
+
+Ensure prompts are clear, specific, and provide enough context.
+
+OPENAI PRINCIPLE: "The clearer your prompt text, the better it is for the model to predict the next likely text."
+
+EXAMPLE:
+✅ GOOD:
+"Create a 150-word product email for remote development teams, highlighting 3 features: real-time collaboration, AI task prioritization, Slack integration. Tone: professional but friendly."
+
+❌ POOR:
+"Write marketing copy for our app."
+
+2. Iterative Refinement
+
+Prompt engineering requires iteration. Start with a prompt, review output, refine.
+
+PROCESS:
+1. Write initial prompt
+2. Review response quality
+3. Identify gaps or issues
+4. Refine wording, add context, simplify
+5. Repeat until satisfied
+
+3. Put Instructions at Beginning
+
+Place main instructions early and separate from context using ### or """
+
+EXAMPLE:
+###Instructions###
+Classify the following review as POSITIVE, NEUTRAL, or NEGATIVE.
+
+###Review###
+"The product works well but shipping took longer than expected."
+
+Classification
+
+4. Use the Latest Model
+
+Newer models are generally easier to prompt engineer and more capable.
+
+LATEST (2025): Use GPT-4, Claude 3.5 Sonnet, or newer for best results
+
+5. Specify Output Format
+
+For tasks requiring structured outputs (extraction, categorization, parsing), specify format explicitly.
+
+CHATGPT EXAMPLE:
+Extract customer information from this email and return as JSON:
+
+Email: [content]
+
+Return:
+{
+"name": "...",
+"email": "...",
+"issue": "...",
+"priority": "HIGH/MEDIUM/LOW"
+}
+
+
+
+====================
+PART 6: PROMPT ENGINEERING WORKFLOW
+====================
+
+1. Define Your Goal Clearly
+
+Questions to Answer:
+• What task do I want the model to perform?
+• What is the input? What is the desired output?
+• Who is the audience?
+• What quality standards must be met?
+
+2. Choose a Base Technique
+
+• Simple task → Zero-shot
+• Needs examples → Few-shot
+• Complex reasoning → Chain of Thought
+• Multiple paths → Tree of Thoughts
+• External tools → ReAct
+• Sequential steps → Prompt Chaining
+
+3. Write Your Prompt
+
+Use the structure:
+[ROLE/CONTEXT] (if needed)
+[TASK DESCRIPTION]
+[EXAMPLES] (if using few-shot)
+[OUTPUT FORMAT]
+[CONSTRAINTS/TONE]
+
+====================
+PART 7: COMMON PITFALLS & SOLUTIONS
+====================
+
+Pitfall 1: Vague Instructions
+
+PROBLEM: "Write something about AI"
+
+SOLUTION: Be specific
+✅ Write a 500-word beginner's guide to machine learning for non-technical managers, including 2 real-world examples and 3 key takeaways. Use simple language and an encouraging tone.
+
+Pitfall 2: Overcomplicating Prompts
+
+PROBLEM:
+"I'm trying to create a system that involves not just writing about the topic but also considering multiple perspectives while factoring in recent developments and perhaps some historical context but mainly focusing on the future..."
+
+SOLUTION: Simplify
+✅ Write about [topic]. Include:
+• 2 current examples
+• 1 future prediction
+
+Pitfall 3: Assuming Context
+
+PROBLEM: "Summarize this report." (Which report? What format?)
+
+SOLUTION: Provide context
+✅ Summarize this Q3 earnings report in bullet points (5-7 points) for executive review. Focus on revenue changes and profit margins.
+
+Pitfall 4: Poor Example Quality
+
+PROBLEM: Providing incorrect or inconsistent examples
+
+SOLUTION: Ensure examples are high-quality and representative
+✅ Use 3-5 diverse, high-quality examples
+✅ Mix different scenarios
+✅ Include edge cases
+
+Pitfall 5: Not Specifying Output Format
+
+PROBLEM: Expecting structured output without requesting it
+
+SOLUTION: Always specify format
+✅ Return results as:
+• JSON for data extraction
+• Markdown for documentation
+• HTML for web content
+
+Pitfall 6: Using Constraints Instead of Instructions
+
+PROBLEM: "Don't write in a boring way. Don't be too technical. Don't include unnecessary details."
+
+SOLUTION: Use positive instructions
+✅ Write in an engaging, conversational style.
+✅ Explain technical concepts using everyday analogies.
+✅ Include only essential details.
+
+====================
+PART 8: REAL-WORLD APPLICATIONS
+====================
+
+Content Generation
+
+USE: Few-shot prompting + role definition
+
+You are a marketing copywriter for SaaS companies.
+
+Write a 150-word landing page headline and description for a project management tool targeting remote teams.
+
+Target audience: Busy project managers
+Tone: Professional and friendly
+Key features: Real-time collaboration, AI prioritization, Slack integration
+
+Examples of good landing page copy:
+[2-3 examples]
+
+Customer Service
+
+USE: Contextual prompting + role definition
+
+You are a customer support specialist for a SaaS product.
+Respond to customer emails with empathy, clarity, and helpful solutions.
+Keep responses under 150 words.
+If uncertain, suggest escalating to senior support.
+
+Ticket: [customer message]
+
+Data Extraction
+
+USE: Structured output format + few-shot
+
+Extract information from customer support tickets in JSON format:
+
+Example:
+Ticket: "My password reset isn't working for 2 days."
+{
+"issue": "Password reset not functioning",
+"severity": "HIGH",
+"category": "Account Access",
+"action": "Urgent - check reset service"
+}
+
+Now extract from:
+Ticket: [new ticket]
+
+Research & Analysis
+
+USE: Chain of Thought + prompt chaining
+
+Step 1: Summarize the following research abstract
+Step 2: Identify the key findings
+Step 3: Explain implications for [industry]
+Step 4: Suggest 2-3 follow-up research questions
+
+Research: [paper]
+
+Code Generation
+
+USE: Few-shot examples + explicit requirements
+
+Write Python functions following this pattern:
+
+Example 1:
+def get_user_age(user_id):
+    """Returns user age from database."""
+    # Implementation
+
+Example 2:
+def calculate_average_score(scores):
+    """Returns average of score list."""
+    # Implementation
+
+Now write:
+def filter_active_users(users_list):
+    """Filter users with login in last 30 days."""
+
+====================
+PART 8: BEST PRACTICES SUMMARY
+====================
+
+Universal Principles (All Models)
+
+1. ✅ Be explicit and specific
+2. ✅ Provide relevant context
+3. ✅ Specify output format
+4. ✅ Use examples when complexity increases
+5. ✅ Test and iterate
+6. ✅ Document what works
+
+
+For Claude Specifically
+
+• Use XML tags for clarity
+• Be explicit with instructions
+• Leverage extended thinking
+• Provide context and motivation
+
+For ChatGPT/OpenAI/Gemini Specifically
+
+• Use clear separators (###) between sections
+• Place instructions at beginning
+• Use latest models when possible
+• Iterate based on feedback
+
+Quick Reference: Prompting Template
+
+[CONTEXT/ROLE]
+You are [role]. [Relevant background].
+
+[TASK]
+Your task is to [specific action]:
+• [Sub-task 1]
+• [Sub-task 2]
+
+[EXAMPLES] (if needed)
+Example input: [input]
+Example output: [output]
+
+[OUTPUT FORMAT]
+Format your response as: [format type]
+Include: [specific elements]
+
+[CONSTRAINTS]
+Tone: [tone]
+Length: [length]
+Do not: [constraints]
+
+====================
+FINAL THOUGHTS
+====================
+
+Prompt engineering is both an art and a science. The principles are consistent across models, but the specific wording matters. The best prompts are:
+
+• Clear: Anyone can understand what you're asking
+• Specific: You've defined success criteria
+• Tested: You've run it multiple times
+• Documented: You can reproduce results
+• Iterative: You're continuously improving
