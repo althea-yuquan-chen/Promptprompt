@@ -9,13 +9,13 @@ from datetime import datetime
 class CLI:
     # Console manager class for I/O - handles all user interaction
 
-    def __init__(self, optimizer): #need to add the hashed parameters below later
+    def __init__(self, config, optimizer, storage, launcher): #need to add the hashed parameters below later
         # This runs when you create a CLI object
         self.console = Console()
-        #* self.config = config
+        self.config = config
         self.optimizer = optimizer
-        #* self.storage = storage
-        #* self.launcher = launcher
+        self.storage = storage
+        self.launcher = launcher
         self.console.print("[bold blue] CLI Initialized![/bold blue]")
 
     def run(self, draft_prompt=None):
@@ -23,8 +23,11 @@ class CLI:
         self.console.print("[bold magenta] Welcome to PromptPrompt! [/bold magenta]")
 
         # Get the draft prompt (either from parameter or ask user)
-        if draft_prompt is None:
-            draft_prompt = self.get_draft_prompt()
+        # 1. API key check (REQUIRED)
+        api_key = self.config.get_api_key()
+        if not api_key:
+            api_key = self.config.setup_first_time()
+
 
         # Generate questions from optimizer
         questions = self.optimizer.clarify(draft_prompt)
@@ -46,17 +49,17 @@ class CLI:
 
         # Save prompts
         # self.console.print("\n Saving prompts...")
-        #* prompt_pair = {
-        #*     "original": draft_prompt,
-        #*     "optimized": improved_prompt,
-        #*     "timestamp": datetime.now().isoformat()
-        #* }
-        #* file_path = self.storage.save_prompts(prompt_pair)
-        #* self.console.print(f"✓ Saved to: {file_path}")
+        prompt_pair = {
+             "original": draft_prompt,
+             "optimized": improved_prompt,
+             "timestamp": datetime.now().isoformat()
+         }
+        file_path = self.storage.save_prompts(prompt_pair)
+        self.console.print(f"✓ Saved to: {file_path}")
 
         # Launch AI Session
         self.console.print("\n Launching AI chat session...")
-        #* self.launcher.launch(improved_prompt)
+        self.launcher.launch(improved_prompt)
 
         # Exit message
         self.console.print("\n" + "="*60)
@@ -148,18 +151,16 @@ class CLI:
             # Generate improved prompt
             # For now, using fake, improved prompt.
             #* when integrating take out if/else statement below and add:
-            # improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
+            #* improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
             # need to add refinements as the 4th parameter so that is included in the prompt if user want it
 
             if refinements:
                 # If there are refinements, add them to the prompt
-                # refinement_text = " Also: " + ", ".join(refinements)
-                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
-                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
+                refinement_text = " Also: " + ", ".join(refinements)
+                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
             else:
                 # First time, no refinements yet
-                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers)
-                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
+                improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
 
             self.show_comparison(draft_prompt, improved_prompt)
 
@@ -190,7 +191,6 @@ class CLI:
         return refinement.strip()
 
 if __name__ == "__main__":
-    # Create a CLI object
-    cli = CLI()
-    # Run it
+    cli = CLI(config, optimizer, storage, launcher)
     cli.run()
+
