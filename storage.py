@@ -26,7 +26,8 @@ class Storage:
                       Defaults to ~/.promptprompt/prompts/
         """
         if base_dir is None:
-            base_dir = Path.home() / ".promptprompt" / "prompts"
+            # base_dir = Path.home() / ".promptprompt" / "prompts"
+            base_dir = Path(__file__).parent / "prompts" / "optimized prompts"
 
         self.base_dir = Path(base_dir)
 
