@@ -1,256 +1,415 @@
 # INSTRUCTIONS FOR ASKING CLARIFYING QUESTIONS
 ## Optimized for Weaker Models Generating Prompts for Stronger Models
 
-CURRENT TASK: Execute STEP 2 - Ask clarifying questions
+CURRENT TASK: Execute STEP 2 - Classify complexity tier, then ask appropriate questions
 
 User's draft prompt: {draft_prompt}
 
-Your task:
-- Analyze the draft prompt carefully
-- Use the structured checklist below to identify missing information
-- Ask user clarification questions following the category framework
-- Return only the questions, numbered
-
 ====================
-CORE PHILOSOPHY FOR WEAKER MODELS
+STEP 1: CLASSIFY TASK COMPLEXITY TIER
 ====================
 
-**IMPORTANT:** You are a weaker model generating prompts that will be executed by a stronger model.
-Your job is to gather COMPREHENSIVE information so you can generate DETAILED, EXPLICIT prompts.
+**Classify the prompt request into one of 3 tiers using these EXPLICIT RULES:**
 
-**Key Principles:**
-- Use structured checklists - don't rely on judgment about "what's important"
-- Gather complete information across all relevant categories
-- Over-ask rather than under-ask when uncertain
-- Follow the framework systematically
-- The stronger model will handle complexity - your job is completeness
+### TIER 1: SIMPLE TASK
 
-====================
-STRUCTURED QUESTION FRAMEWORK
-====================
+**Use TIER 1 if the request matches 2+ of these:**
+- [ ] Request is 1-2 sentences
+- [ ] No specific deliverable format mentioned (no "write a blog post", "create a report")
+- [ ] User asks for explanation or understanding ("explain X", "help me understand Y")
+- [ ] No detailed requirements listed
+- [ ] No specific constraints mentioned (length, tone, format)
+- [ ] General educational or informational purpose
 
-## The 4-Category Checklist
+**Examples:**
+- "Help me create a prompt to explain quantum physics"
+- "I need a prompt to understand machine learning basics"
+- "Prompt for learning about the French Revolution"
 
-For ANY user request, systematically check these 4 categories:
+**Question approach:** Ask 2-3 questions maximum
 
-### CATEGORY 1: Background & Context
-**Ask about:**
-- User's expertise level (beginner, intermediate, expert)
-- Domain or field (which industry, subject area, discipline)
-- Current situation (what course, what project, what role)
+---
 
-**Example questions:**
-- "What's your background with [topic] - beginner, intermediate, or expert level?"
-- "What field or domain is this for - [list relevant options based on request]?"
-- "Are you a student, professional, researcher, or hobbyist?"
+### TIER 2: MEDIUM TASK
 
-### CATEGORY 2: Goal & Use Case
-**Ask about:**
-- Primary purpose (learn, teach, work task, exam, project)
-- Specific outcome needed (understand concept, create deliverable, make decision)
-- Success criteria (what would make this helpful)
+**Use TIER 2 if the request matches 2+ of these:**
+- [ ] User specifies a deliverable type (blog post, email, analysis, code, presentation)
+- [ ] Some context is provided (audience, purpose, or basic constraints)
+- [ ] Request is 2-4 sentences
+- [ ] User lists 2-4 specific requirements
+- [ ] Mentions specific use case or application
+- [ ] Has a clear output format in mind
 
-**Example questions:**
-- "What will you use this for - exam preparation, work project, teaching others, or personal learning?"
-- "What specific outcome do you need - [list relevant options]?"
-- "What's the main goal - [list 3-4 relevant goals based on domain]?"
+**Examples:**
+- "Create a prompt for writing marketing copy for our SaaS product"
+- "I need a prompt to explain selection bias vs OVB for my exam"
+- "Help me prompt an AI to generate Python code for data analysis"
+- "Prompt for writing a LinkedIn post about leadership"
 
-### CATEGORY 3: Format & Approach
-**Ask about:**
-- Preferred structure (paragraphs, bullets, table, step-by-step)
-- Desired detail level (brief overview, comprehensive, technical depth)
-- Examples needed (yes/no, what kind)
-- Length preferences (short, medium, long)
+**Question approach:** Ask 3-4 questions using structured categories
 
-**Example questions:**
-- "How would you like this formatted - detailed paragraphs, bullet points, comparison table, or step-by-step breakdown?"
-- "How detailed should this be - brief overview (2-3 paragraphs), moderate detail, or comprehensive explanation?"
-- "Do you want specific examples included - if yes, what type?"
+---
 
-### CATEGORY 4: Constraints & Specifics
-**Ask about:**
-- Must include (specific elements required)
-- Must avoid (things to exclude)
-- Tone or style (formal, casual, technical, friendly)
-- Domain-specific requirements
+### TIER 3: COMPLEX TASK
 
-**Example questions:**
-- "Are there specific things that MUST be included in the explanation?"
-- "Anything specific to avoid or leave out?"
-- "What tone works best - [list relevant tone options for the domain]?"
+**Use TIER 3 if the request matches 2+ of these:**
+- [ ] User lists 5+ specific requirements or components
+- [ ] Request mentions multiple sections/phases/steps
+- [ ] High-stakes context (comprehensive research, professional deliverable, important project)
+- [ ] User explicitly says: "detailed", "comprehensive", "complete", "thorough"
+- [ ] Multiple different deliverable types involved
+- [ ] Complex integration or multi-stage process
+- [ ] Request is 5+ sentences with detailed specifications
 
-====================
-HOW MANY QUESTIONS TO ASK
-====================
+**Examples:**
+- "Create a prompt for a comprehensive research paper covering X, Y, Z with literature review, methodology, analysis, and conclusions"
+- "I need a prompt to build a complete content marketing strategy including social media, email campaigns, and blog posts"
+- "Help me create a prompt for an AI to develop full technical documentation with API reference, tutorials, and examples"
 
-**Default: Ask 4-5 questions (one from each category, sometimes 2 from most important category)**
+**Question approach:** Ask 4-5 questions using full framework
 
-**Ask 3-4 questions when:**
-- User has already provided information answering one category
-- Request is moderately specific (e.g., "explain X for students")
-- Clear domain context is given
+---
 
-**Ask 5-6 questions when:**
-- Request is very vague ("help me with content")
-- Multiple interpretations possible
-- High-stakes or complex task
-- Domain requires additional technical specifics
-
-**Ask 2-3 questions ONLY when:**
-- User's request is already very detailed
-- Task is extremely straightforward
-- User explicitly provided most information
-
-**NEVER ask fewer than 2 questions unless the request is completely unambiguous, and NEVER ask more than 6 questions**
+**CLASSIFICATION FLOWCHART:**
+```
+1. Count sentences in request → 1-2? Likely TIER 1
+2. Check for deliverable type mentioned → No? Likely TIER 1
+3. Check for "comprehensive/detailed/complete" → Yes? Likely TIER 3
+4. Count specific requirements → 0-1? TIER 1 | 2-4? TIER 2 | 5+? TIER 3
+5. When uncertain → Default to TIER 2
+```
 
 ====================
-QUESTION CONSTRUCTION RULES
+TIER 1: SIMPLE TASK QUESTIONS (2-3 questions)
 ====================
 
-## Rule 1: Make Questions Specific with Options
+**Prompting Technique: Zero-Shot Foundation**
+Simple tasks typically use zero-shot prompting, which requires minimal context. Focus only on what's essential.
 
-**BAD (too generic):**
-❌ "What's your goal?"
-❌ "Who is this for?"
-❌ "What format do you want?"
+### Question Framework
 
-**GOOD (specific with options):**
-✅ "What's your goal - exam preparation, project work, teaching others, or general understanding?"
-✅ "Who will read this - students, professionals in [field], beginners, or technical experts?"
-✅ "How should this be formatted - paragraphs with examples, comparison table, bullet-point summary, or step-by-step guide?"
+Ask only the MOST CRITICAL information:
 
-## Rule 2: Show Domain Understanding Through Options
+**Question 1 - Context/Background (ALWAYS ask)**
+```
+What's [the user's background / the context] for this?
+- [Option A related to user level/role]
+- [Option B related to user level/role]
+- [Option C related to user level/role]
+```
 
-Tailor your options to the actual domain:
+**Question 2 - Goal/Use Case (ALWAYS ask)**
+```
+What will this be used for?
+- [Option A: learning/understanding]
+- [Option B: teaching/explaining to others]
+- [Option C: work/professional task]
+- [Option D: other specific use]
+```
 
-**For Technical/Code requests:**
-- "What's your programming experience - beginner learning basics, intermediate building projects, or experienced optimizing code?"
-- "What's the use case - production application, learning exercise, prototype, or documentation?"
+**Question 3 - Format Preference (OPTIONAL - only if relevant)**
+```
+How should this be formatted/structured?
+- [Option A]
+- [Option B]
+- [Option C]
+```
 
-**For Academic/Learning requests:**
-- "What's this for - exam preparation, homework assignment, research paper, or self-study?"
-- "What's your current level - introductory course, advanced undergraduate, or graduate level?"
+### Response Format
 
-**For Business/Marketing requests:**
-- "Who's the audience - C-level executives, technical teams, or general consumers?"
-- "What's the goal - lead generation, brand awareness, customer education, or direct sales?"
+```
+To create the best prompt, I just need to know:
 
-**For Creative/Content requests:**
-- "What type of content - blog post, social media, email copy, or video script?"
-- "What's the tone - professional and formal, casual and friendly, or creative and entertaining?"
+1. [Question 1 with 3-4 specific options]
+2. [Question 2 with 3-4 specific options]
+[3. Question 3 if needed - only if format really matters]
+```
 
-## Rule 3: Reference What User Already Said
+### Example (TIER 1)
 
-Start questions by acknowledging what you know:
+**User:** "Help me create a prompt to explain blockchain"
 
-**GOOD:**
-✅ "You mentioned you're studying economics - is this for an introductory or intermediate econometrics course?"
-✅ "Since this is for marketing content - what type specifically: social media, email campaigns, or landing pages?"
+**Your questions:**
+```
+To create the best prompt, I just need to know:
 
-**BAD:**
-❌ "What subject is this for?" (when user said "economics")
-❌ "What will you use this for?" (when user said "exam")
+1. What's your background with blockchain - complete beginner, some familiarity, or looking to deepen existing knowledge?
+2. What will you use this for - personal learning, explaining to others, or professional work?
+```
 
-====================
-EXAMPLE APPLICATIONS BY DOMAIN
-====================
-
-## Example 1: Academic/Learning Request
-
-**User says:** "Help me understand the difference between selection bias and OVB"
-
-**Questions to ask:**
-1. **Background**: What's your statistics background - taking an intro course, intermediate econometrics, or advanced graduate level?
-2. **Goal**: What's this for - exam preparation, homework problem, research project, or general understanding?
-3. **Format**: How should this be explained - conceptual overview with examples, technical with equations, or comparison table format?
-4. **Constraints**: Are there specific aspects you need covered - detection methods, how to fix them, real-world examples, or just the core difference?
-
-## Example 2: Technical/Code Request
-
-**User says:** "Create a prompt for generating Python code"
-
-**Questions to ask:**
-1. **Background**: What's your Python experience - beginner learning syntax, intermediate building projects, or advanced optimization?
-2. **Goal**: What will this code do - data analysis, web scraping, automation script, or API integration?
-3. **Specifics**: What functionality specifically - [ask domain-specific options based on their goal]?
-4. **Format**: Do you want - complete working code, code with detailed comments, or pseudocode with explanations?
-5. **Constraints**: Any requirements - specific libraries to use/avoid, code style preferences, or performance needs?
-
-## Example 3: Business/Professional Request
-
-**User says:** "Help me write marketing content"
-
-**Questions to ask:**
-1. **Specifics**: What type of marketing content - social media posts, email campaigns, landing pages, or ad copy?
-2. **Context**: What's the product/service and who's the target customer - their role, industry, and main pain points?
-3. **Goal**: What's the primary objective - brand awareness, lead generation, customer education, or direct conversions?
-4. **Format**: What length and structure - short punchy copy (50 words), medium posts (150-200 words), or long-form content?
-5. **Constraints**: Brand tone - professional and formal, friendly and approachable, or edgy and bold?
-
-## Example 4: Creative/Content Request
-
-**User says:** "I need help with writing"
-
-**Questions to ask:**
-1. **Type**: What kind of writing - technical documentation, creative fiction, business proposals, academic papers, or blog posts?
-2. **Background**: What's your experience level with this type of writing - first time, some experience, or experienced writer?
-3. **Audience**: Who will read this and what's their expertise - complete beginners, professionals in the field, or mixed audience?
-4. **Goal**: What should the writing achieve - inform/educate, persuade/convince, entertain, or teach a skill?
-5. **Format**: Preferred structure - narrative flow, structured sections with headers, or conversational style?
-
-## Example 5: Data/Analysis Request
-
-**User says:** "Help me analyze data"
-
-**Questions to ask:**
-1. **Data type**: What kind of data - sales numbers, customer feedback, survey responses, website analytics, or research data?
-2. **Goal**: What questions are you trying to answer - identify trends, compare groups, find patterns, predict outcomes, or summarize insights?
-3. **Background**: What's your analysis experience - beginner using Excel, intermediate with SQL, or advanced with Python/R?
-4. **Use case**: What will you do with results - make business decision, create report, present to stakeholders, or support research?
-5. **Format**: How should results be presented - summary narrative, data tables, visualizations, or statistical report?
+**Why only 2 questions:**
+- Simple explanatory task (zero-shot)
+- Background determines language complexity
+- Use case determines depth and focus
+- Format not critical for explanation
 
 ====================
-RESPONSE FORMAT TEMPLATES
+TIER 2: MEDIUM TASK QUESTIONS (3-4 questions)
 ====================
 
-### Template 1: Standard 4-Question Format
+**Prompting Techniques: Role-Based + Contextual + Few-Shot (optional)**
+Medium tasks benefit from detailed roles and context. May need examples for specific formatting.
+
+### The 4-Category Framework (Pick 3-4 most relevant)
+
+Use these categories but be SELECTIVE - not all categories matter equally for every task.
+
+**Category 1: Background & Context**
+```
+What's your [background/experience level/context]?
+- [3-4 specific options relevant to domain]
+```
+
+**Category 2: Goal & Use Case**
+```
+What's the goal/purpose?
+- [3-4 specific options]
+```
+
+**Category 3: Format & Approach**
+```
+How should this be [formatted/structured/approached]?
+- [3-4 specific options]
+```
+
+**Category 4: Constraints & Specifics**
+```
+Are there specific [requirements/constraints/things to include or avoid]?
+- [3-4 specific options or open-ended]
+```
+
+### Selection Logic
+
+**For TIER 2, ask questions from:**
+- Category 1 (Background) - ALMOST ALWAYS
+- Category 2 (Goal) - ALMOST ALWAYS
+- Category 3 OR 4 (pick which matters more for this task)
+- Sometimes both 3 AND 4 if both are critical
+
+### Response Format
 
 ```
 To create the best prompt for you, I need to understand:
 
-1. [Category 1 question - Background/Context]
-2. [Category 2 question - Goal/Use Case]
-3. [Category 3 question - Format/Approach]
-4. [Category 4 question - Constraints/Specifics]
+1. [Category 1 question with options]
+2. [Category 2 question with options]
+3. [Category 3 or 4 question with options]
+[4. Optional 4th question if both Category 3 and 4 matter]
 ```
 
-### Template 2: Extended 5-Question Format (for complex requests)
+### Example (TIER 2)
 
+**User:** "Create a prompt for writing LinkedIn posts about leadership"
+
+**Your questions:**
 ```
-To create the best prompt for you, I need to clarify a few things:
+To create the best prompt for you, I need to understand:
 
-1. [Background question with options]
-2. [Goal question with options]
-3. [Specifics question - most important for this domain]
-4. [Format question with options]
-5. [Constraints question]
-```
-
-### Template 3: Focused 3-Question Format (when some info is clear)
-
-```
-To create the best prompt, I need to clarify:
-
-1. [Most critical missing information]
-2. [Second most important]
-3. [Format or constraints]
+1. What's your role/position - early-career professional building presence, mid-level manager sharing experiences, or senior executive thought leader?
+2. What's the goal for these posts - building personal brand, sharing lessons learned, starting discussions, or establishing expertise?
+3. What style works best - professional and polished, conversational and authentic, or inspirational and motivational?
+4. Any specific topics or themes to focus on - team management, decision-making, career growth, or leadership philosophy?
 ```
 
-**ALWAYS include:**
-- The stem phrase ("To create the best prompt for you, I need to understand/clarify:")
-- Numbered questions
-- Specific options in your questions where appropriate
-- NO additional commentary after the questions
+**Why 4 questions:**
+- Role determines voice and credibility (Category 1)
+- Goal affects content strategy (Category 2)
+- Style is critical for LinkedIn (Category 3)
+- Topics help focus the prompt (Category 4)
+
+====================
+TIER 3: COMPLEX TASK QUESTIONS (4-5 questions)
+====================
+
+**Prompting Techniques: Role-Based + Contextual + Few-Shot + Structured Output + Chain of Thought (if applicable)**
+Complex tasks require comprehensive information across all dimensions. Often need multiple prompting techniques combined.
+
+### Use All 4 Categories + Domain-Specific
+
+For TIER 3, systematically cover all categories plus add domain-specific questions as needed.
+
+**The Full Framework:**
+
+1. **Background & Context** (ALWAYS)
+2. **Goal & Use Case** (ALWAYS)
+3. **Format & Approach** (ALWAYS)
+4. **Constraints & Specifics** (ALWAYS)
+5. **Domain-Specific Question** (If applicable - technical requirements, specific methodologies, etc.)
+
+### Response Format
+
+```
+To create the best prompt for you, I need to clarify several things:
+
+1. [Background question with specific options]
+2. [Goal question with specific options]
+3. [Format question with specific options]
+4. [Constraints question with specific options or open-ended]
+[5. Domain-specific question if applicable]
+```
+
+### Example (TIER 3)
+
+**User:** "I need a comprehensive prompt for an AI to create a full content marketing strategy including blog posts, social media, email campaigns, and SEO optimization"
+
+**Your questions:**
+```
+To create the best prompt for you, I need to clarify several things:
+
+1. What's your company/product context - B2B SaaS, B2C e-commerce, professional services, or other industry?
+2. Who's your target audience - their role, expertise level, pain points, and where they spend time online?
+3. What's the primary goal - brand awareness, lead generation, customer education, or direct sales conversions?
+4. What level of detail do you need - high-level strategy outline, detailed tactical plan with examples, or complete execution-ready content?
+5. Are there any existing brand guidelines, content restrictions, or specific platforms/channels you must include or avoid?
+```
+
+**Why 5 questions:**
+- Context critical for strategy (Category 1)
+- Audience defines everything (Category 1 extended)
+- Goal determines metrics and approach (Category 2)
+- Detail level affects prompt structure (Category 3)
+- Constraints ensure feasibility (Category 4)
+
+====================
+QUESTION CONSTRUCTION RULES (ALL TIERS)
+====================
+
+### Rule 1: Always Provide Specific Options
+
+**Bad (too generic):**
+- "What's your goal?"
+- "Who is this for?"
+
+**Good (specific options):**
+- "What's your goal - exam preparation, work project, or personal learning?"
+- "Who is this for - beginners, intermediate learners, or experts?"
+
+### Rule 2: Show Domain Understanding
+
+Tailor options to the actual domain:
+
+**Academic request:**
+"What's this for - exam prep, homework, research paper, or self-study?"
+
+**Business request:**
+"What's the goal - lead generation, brand awareness, or customer education?"
+
+**Technical request:**
+"What's your experience level - beginner learning basics, intermediate building projects, or advanced optimizing code?"
+
+### Rule 3: Reference What User Already Said
+
+**Good:**
+- "You mentioned leadership posts - what's your current role: early-career, mid-level manager, or senior executive?"
+
+**Bad:**
+- "What's your role?" (when they already said something relevant)
+
+### Rule 4: Keep Questions Scannable
+
+Format for easy reading:
+```
+1. [Clear question]
+   - Option A
+   - Option B
+   - Option C
+   - Option D
+```
+
+====================
+TIER-SPECIFIC EXAMPLES BY DOMAIN
+====================
+
+## Academic/Learning Tasks
+
+### TIER 1: "Help me understand selection bias"
+```
+Quick questions:
+
+1. What's your stats background - intro course, intermediate, or advanced?
+2. What's this for - exam prep, homework, or general understanding?
+```
+
+### TIER 2: "Create a prompt to explain selection bias vs OVB for my exam"
+```
+To create the best prompt for you, I need to understand:
+
+1. What level course - introductory statistics, intermediate econometrics, or advanced graduate?
+2. What format would help most for exam prep - conceptual overview, comparison table, or worked examples?
+3. Should this cover just definitions and differences, or also include detection methods and solutions?
+```
+
+### TIER 3: "Comprehensive prompt for a research paper on bias in econometric analysis"
+```
+To create the best prompt for you, I need to clarify several things:
+
+1. What's your academic level - undergraduate thesis, master's paper, or PhD research?
+2. What's the scope - survey of bias types, focused on specific bias, or methodological comparison?
+3. What structure do you need - literature review, methodology, analysis, all sections?
+4. What's the depth required - comprehensive technical with proofs, applied focus, or mixed?
+5. Are there specific econometric methods or applications you need to cover?
+```
+
+## Technical/Code Tasks
+
+### TIER 1: "Help me create a prompt for Python data analysis"
+```
+Quick questions:
+
+1. What's your Python level - beginner, intermediate, or advanced?
+2. What type of analysis - exploratory data analysis, statistical modeling, or visualization?
+```
+
+### TIER 2: "Prompt for generating Python code to analyze sales data"
+```
+To create the best prompt for you, I need to understand:
+
+1. What's your Python experience - beginner learning, intermediate building, or advanced optimizing?
+2. What analysis specifically - trends, predictions, customer segments, or product performance?
+3. What format - complete working code, code with comments, or tutorial walkthrough?
+4. Any specific libraries required - pandas/numpy only, or can use scikit-learn, etc.?
+```
+
+### TIER 3: "Comprehensive prompt for building a full data pipeline with cleaning, analysis, visualization, and reporting"
+```
+To create the best prompt for you, I need to clarify several things:
+
+1. What's your technical level - learning data science, building for work project, or production deployment?
+2. What data source/format - CSV, database, API, or multiple sources?
+3. What analyses are needed - descriptive stats, predictive models, time series, or all?
+4. What's the output - automated reports, dashboard, or interactive notebooks?
+5. Any infrastructure constraints - must run locally, cloud deployment, specific tools required?
+```
+
+## Business/Marketing Tasks
+
+### TIER 1: "Help me create content about AI"
+```
+Quick questions:
+
+1. What type of content - blog post, social media, email, or something else?
+2. Who's the audience - technical folks, business people, or general consumers?
+```
+
+### TIER 2: "Prompt for LinkedIn posts about leadership"
+```
+To create the best prompt for you, I need to understand:
+
+1. What's your role - early-career professional, mid-level manager, or senior executive?
+2. What's the goal - building personal brand, sharing lessons, or establishing expertise?
+3. What style - professional and polished, conversational, or inspirational?
+```
+
+### TIER 3: "Full content marketing strategy including blogs, social, email, and SEO"
+```
+To create the best prompt for you, I need to clarify several things:
+
+1. What's your business context - B2B SaaS, B2C e-commerce, services, or other?
+2. Who's your target audience - their role, problems, and where they spend time?
+3. What's the primary goal - awareness, leads, education, or conversions?
+4. What detail level - strategic overview, tactical plan, or execution-ready content?
+5. Any brand guidelines, restrictions, or must-have channels?
+```
 
 ====================
 QUALITY CHECKLIST BEFORE ASKING
@@ -258,80 +417,86 @@ QUALITY CHECKLIST BEFORE ASKING
 
 Before finalizing your questions, verify:
 
-✅ **Have I covered at least 3 of the 4 core categories?**
-   - Background/Context
-   - Goal/Use Case
-   - Format/Approach
-   - Constraints/Specifics
+**For ALL tiers:**
+- Have I provided 3-4 specific options for each question?
+- Are my questions tailored to the actual domain?
+- Am I building on what the user already said?
+- Would different answers significantly change the prompt?
 
-✅ **Are my questions specific with concrete options?**
-   - Not "What format?" but "What format - paragraphs, bullets, table, or step-by-step?"
+**For TIER 1 specifically:**
+- Am I asking ONLY 2-3 questions?
+- Are these the absolute minimum needed?
+- Am I avoiding over-engineering a simple request?
 
-✅ **Do my questions show domain understanding?**
-   - Tailor options to the actual field (marketing, technical, academic, etc.)
+**For TIER 2 specifically:**
+- Have I covered 3 of the 4 core categories?
+- Did I skip the less relevant category?
+- Are my questions focused on what matters for this deliverable?
 
-✅ **Am I asking about things that are truly unclear?**
-   - Don't re-ask what user already said
-
-✅ **Would different answers significantly change the prompt I generate?**
-   - Each question should impact the final prompt structure
-
-✅ **Have I provided 3-4 options for each question when possible?**
-   - This helps users answer quickly and clearly
+**For TIER 3 specifically:**
+- Have I covered all 4 core categories?
+- Is there a domain-specific question if needed?
+- Am I gathering enough info for a complex prompt?
 
 ====================
 COMMON MISTAKES TO AVOID
 ====================
 
-## Mistake 1: Asking Too Few Questions
-❌ Only asking 1-2 questions when you need comprehensive information
-✅ Use the 4-category framework to ensure completeness
+### Mistake 1: Wrong Tier Classification
+- Using TIER 3 for "explain X" (overkill)
+- Using TIER 1 for "comprehensive research paper" (insufficient)
+- Follow the explicit rules for classification
 
-## Mistake 2: Vague Questions Without Options
-❌ "What do you want?"
-✅ "What outcome do you need - understanding concepts, creating a deliverable, making a decision, or teaching others?"
+### Mistake 2: Asking Too Many Questions for Simple Tasks
+- 5 questions for "explain quantum physics"
+- 2-3 questions max for TIER 1
 
-## Mistake 3: Not Using Domain-Specific Language
-❌ Generic questions that could apply to anything
-✅ Questions that show you understand the domain (marketing, technical, academic, etc.)
+### Mistake 3: Asking Too Few Questions for Complex Tasks
+- 2 questions for "full content marketing strategy"
+- 4-5 questions for TIER 3
 
-## Mistake 4: Skipping Categories
-❌ Only asking about format, ignoring context and goals
-✅ Systematically cover all 4 categories
+### Mistake 4: Generic Questions
+- "What do you want?"
+- "What's your goal - exam prep, work project, or personal learning?"
 
-## Mistake 5: Re-asking What User Already Provided
-❌ User says "for my exam" → You ask "What will you use this for?"
-✅ Acknowledge and build on what they said
-
-====================
-WHEN TO DEVIATE FROM FRAMEWORK
-====================
-
-**Ask fewer than 3 questions ONLY when:**
-- User has already provided detailed information covering 2+ categories
-- The task is completely unambiguous (e.g., "extract emails from text as JSON")
-- User explicitly says "keep it simple" or shows frustration with questions
-
-**Ask more than 5 questions when:**
-- Request is extremely vague ("help me with stuff")
-- High-stakes or mission-critical task
-- Technical domain requires additional specific parameters
-
-**Default to 4-5 questions for most requests**
+### Mistake 5: Not Providing Options
+- "What's your background?"
+- "What's your background - beginner, intermediate, or advanced?"
 
 ====================
-FINAL REMINDERS
+FINAL DECISION FLOWCHART
 ====================
 
-**Your mission as a weaker model:**
-1. Gather COMPREHENSIVE information using the 4-category framework
-2. Ask SPECIFIC questions with concrete options
-3. Show DOMAIN UNDERSTANDING through tailored questions
-4. Ensure you can generate a DETAILED, EXPLICIT prompt for the stronger model
-5. When uncertain, ask rather than assume
+```
+START
+  ↓
+Classify complexity tier:
+  ├─ Simple (1-2 sentences, no deliverable) → TIER 1
+  ├─ Medium (has deliverable, some details) → TIER 2
+  └─ Complex (5+ requirements, comprehensive) → TIER 3
+       ↓
+Ask appropriate number of questions:
+  ├─ TIER 1 → 2-3 questions
+  ├─ TIER 2 → 3-4 questions
+  └─ TIER 3 → 4-5 questions
+       ↓
+Return ONLY the numbered questions
+```
 
-**Key principle: Over-gather information rather than under-gather**
+====================
+REMEMBER
+====================
 
-The stronger model can handle complex, detailed prompts. Your job is to ensure you have everything needed to create that detailed prompt.
+**Your mission:**
+1. Classify into the right tier using explicit rules
+2. Ask the appropriate number of questions for that tier
+3. Provide specific options in every question
+4. Show domain understanding through tailored options
+
+**Key principle: Match effort to complexity**
+
+- Simple task → Simple questions (2-3)
+- Medium task → Moderate questions (3-4)
+- Complex task → Comprehensive questions (4-5)
 
 **Return only the numbered questions with no additional commentary.**

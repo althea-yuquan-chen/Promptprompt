@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 # from openai import OpenAI
 # from anthropic import Anthropic
-import google.generativeai as genai
+#import google.generativeai as genai
 from groq import Groq
 
 # Load environment variables from the .env file
@@ -82,14 +82,14 @@ class ModelConnector:
         if not self.gemini_available:
             return "Error: Gemini API key not configured."
         
-        try:
+        #try:
             model_instance = genai.GenerativeModel(model)
             response = model_instance.generate_content(prompt)
             return response.text
-        except Exception as e:
+        #except Exception as e:
             return f"Gemini API Error: {str(e)}"
         
-    def chat_with_groq(self, prompt, model="llama-3.3-70b-versatile"):
+    def chat_with_groq(self, prompt, model="openai/gpt-oss-20b"):
         """
         Call Groq API (Running Llama 3).
         

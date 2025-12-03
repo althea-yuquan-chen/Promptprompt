@@ -2,6 +2,7 @@ import sys
 import os
 from getpass import getpass
 from dotenv import load_dotenv
+import shutil
 
 # Import your modules
 from api_client import ModelConnector
@@ -25,10 +26,10 @@ def setup_api_keys():
 
     # Check if core keys exist (Using Groq as the example since it's mandatory/default)
     groq_key = os.getenv("GROQ_API_KEY")
-    gemini_key = os.getenv("GEMINI_API_KEY")
+    #gemini_key = os.getenv("GEMINI_API_KEY")
 
     # If keys already exist, skip the setup process
-    if groq_key or gemini_key:
+    if groq_key :
         return
 
     print("\n" + "="*60)
@@ -124,22 +125,48 @@ def main():
         optimizer = PromptOptimizer(api_client=api)
         storage = Storage()
         # launcher = ChatLauncher()
-        launcher = weblauncher.WebLauncher()
+        launcher = weblauncher.WebLauncher(use_claude_code=True)
     except Exception as e:
         print(f"[Error] Failed to initialize optimizer: {e}")
         # print("Hint: Ensure you have a 'prompts' folder with .txt files.")
         sys.exit(1)
 
-    # --- STEP 4: Launch the CLI (View) ---
+    # --- STEP 3.5: Get Claude Code path ---
+    claude_code_path = None
+    if launcher.use_claude_code:
+        # Load config to check for saved path
+        config = storage.load_config()
+        claude_code_path = config.get("claude_code_path")
+
+        # If not in config, check if it's in PATH
+        if not claude_code_path:
+            if shutil.which("claude"):
+                claude_code_path = "claude"
+                # Save to config for future use
+                config["claude_code_path"] = claude_code_path
+                storage.save_config(config)
+            # If not in PATH either, CLI will prompt user later
+
+    # --- STEP 4: Launch the CLI (View) ---/
     print("[System] Launching User Interface...\n")
     try:
         # Pass the optimizer to the CLI
         cli_app = CLI(optimizer=optimizer, storage=storage, launcher=launcher)
-        cli_app.run()
+
+        # If Claude Code enabled but no path found, prompt user
+        if launcher.use_claude_code and not claude_code_path:
+            claude_code_path = cli_app.get_claude_code_path()
+            if claude_code_path:
+                # Save to config
+                config = storage.load_config()
+                config["claude_code_path"] = claude_code_path
+                storage.save_config(config)
+
+        cli_app.run(claude_code_path=claude_code_path)
     except KeyboardInterrupt:
         print("\n[System] Program interrupted by user.")
     except Exception as e:
-        print(f"\n[Error] An unexpected error occurred in the CLI: {e}")
+        print(f"\n[Error] An unexpe1cted error occurred in the CLI: {e}")
 
 if __name__ == "__main__":
     main()

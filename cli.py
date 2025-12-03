@@ -5,6 +5,8 @@
 from rich.console import Console
 from rich.panel import Panel
 from datetime import datetime
+import shutil
+import os
 #from launcher import ChatLauncher
 
 class CLI:
@@ -42,7 +44,7 @@ class CLI:
 
         return model_map[choice]
 
-    def run(self, draft_prompt=None):
+    def run(self, draft_prompt=None, claude_code_path=None):
         # Main method - this is what starts everything
         self.console.print("[bold magenta] Welcome to PromptPrompt! [/bold magenta]")
 
@@ -87,7 +89,7 @@ class CLI:
         self.console.print(f"✓ Saved to: {file_path}")
 
         # Launch AI Session
-        self.launcher.launch(improved_prompt)
+        self.launcher.launch(improved_prompt, claude_code_path)
         #* self.launcher.launch(improved_prompt)
         # self.console.print(f"\nLaunching {model_choice.upper()}...")
         # self.launcher.launch(improved_prompt)
@@ -221,6 +223,37 @@ class CLI:
             refinement = input("\n→ ")
 
         return refinement.strip()
+
+    def get_claude_code_path(self):
+        """
+        Prompt user for Claude Code path and validate it.
+        Returns the path if valid, None if user skips.
+        """
+        self.console.print("\n" + "="*60)
+        self.console.print("[bold yellow]Claude Code Setup Required[/bold yellow]")
+        self.console.print("="*60)
+        self.console.print("\n[dim]Claude Code was not found in your system PATH.[/dim]")
+        self.console.print("\nPlease provide the full path to your Claude Code executable.")
+        self.console.print("\n[cyan]Examples:[/cyan]")
+        self.console.print("  • macOS/Linux: /usr/local/bin/claude")
+        self.console.print("  • Custom install: /Users/yourname/.local/bin/claude")
+        self.console.print("\n[dim]Or press Enter to skip and use web browser instead.[/dim]")
+        self.console.print("-"*60)
+
+        path = input("\nClaude Code path: ").strip()
+
+        if not path:
+            self.console.print("[yellow]Skipping Claude Code setup. Using web browser.[/yellow]")
+            return None
+
+        # Validate the path
+        if os.path.exists(path) and os.access(path, os.X_OK):
+            self.console.print(f"[green]✓ Found Claude Code at: {path}[/green]")
+            return path
+        else:
+            self.console.print(f"[red]✗ Invalid path or file not executable: {path}[/red]")
+            self.console.print("[yellow]Falling back to web browser.[/yellow]")
+            return None
 
 if __name__ == "__main__":
     cli.run()

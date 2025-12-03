@@ -21,7 +21,6 @@ class PromptOptimizer:
 
         # Path to prompts directory
         self.prompts_dir = Path(__file__).parent / "prompts"
-
         # Load reusable parts once at initialization
         self.system_prompt = self._load_prompt("system.txt")
         self.prompting_practices = self._load_prompt("prompting_practices.txt")
@@ -78,7 +77,16 @@ class PromptOptimizer:
 
         # Parse questions from response
         # Helpd with claude ai
-        questions = [q.strip() for q in response["content"].strip().split("\n") if q.strip()]
+        # Extract only numbered questions (lines starting with "1.", "2.", etc.)
+        import re
+        questions = []
+        for line in response["content"].strip().split("\n"):
+            line = line.strip()
+            # Match lines that start with a number followed by a period or parenthesis
+            if re.match(r'^\d+[\.\)]\s+', line):
+                # Remove the number prefix (e.g., "1. " or "2) ")
+                question = re.sub(r'^\d+[\.\)]\s+', '', line)
+                questions.append(question)
 
         return questions
 

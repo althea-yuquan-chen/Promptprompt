@@ -1,6 +1,8 @@
+from __future__ import annotations
 
 from pathlib import Path
 from datetime import datetime
+import json
 
 try:
     from promptprompt.exceptions import StorageError
@@ -30,6 +32,8 @@ class Storage:
             base_dir = Path(__file__).parent / "prompts" / "optimized prompts"
 
         self.base_dir = Path(base_dir)
+        # Config file is in the project root, not in prompts folder
+        self.config_file = Path(__file__).parent / "launcher_config.json"
 
         try:
             # Create directory if it doesn't exist
@@ -109,6 +113,35 @@ class Storage:
             raise StorageError(f"Failed to write file: {exc}") from exc
 
         return file_path
+
+    def load_config(self) -> dict:
+        """
+        Load application configuration from launcher_config.json.
+
+        Returns:
+            dict: Configuration dictionary. Empty dict if file doesn't exist.
+        """
+        if not self.config_file.exists():
+            return {}
+
+        try:
+            with open(self.config_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as exc:
+            raise StorageError(f"Failed to load config: {exc}") from exc
+
+    def save_config(self, config: dict) -> None:
+        """
+        Save application configuration to launcher_config.json.
+
+        Args:
+            config: Configuration dictionary to save.
+        """
+        try:
+            with open(self.config_file, 'w', encoding='utf-8') as f:
+                json.dump(config, f, indent=2)
+        except Exception as exc:
+            raise StorageError(f"Failed to save config: {exc}") from exc
 
 
 # manual test
