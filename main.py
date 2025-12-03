@@ -63,9 +63,9 @@ def setup_api_keys():
     load_dotenv(ENV_PATH, override=True)
 
 def main():
-    print("\n" + "="*50)
+    print("\n" + "*"*50)
     print("   PROMPT PROMPT SYSTEM STARTUP   ")
-    print("="*50 + "\n")
+    print("*"*50 + "\n")
     
     # --- STEP 0: Check & Ask for API Keys ---
     setup_api_keys()
