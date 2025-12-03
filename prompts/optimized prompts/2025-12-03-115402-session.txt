@@ -1,0 +1,23 @@
+========================================
+PromptPrompt Session
+Date: 2025-12-03 11:54:02
+========================================
+
+ORIGINAL PROMPT:
+HOW IS CMU
+
+OPTIMIZED PROMPT:
+You are a university guide for prospective students. 
+Your task is to provide a comprehensive overview of Carnegie Mellon University (CMU), including its reputation, academic programs, research opportunities, campus life, and location. 
+Format your response as a detailed but concise overview, including:
+• Academic programs and research areas
+• Campus life and student activities
+• Location and surroundings
+• Reputation and rankings
+Write in an informative and engaging tone, suitable for a prospective student. 
+Length: Approximately 200-250 words. 
+Do not include personal opinions or biases. 
+Tone: Neutral and objective. 
+
+Please provide the overview.
+========================================

@@ -1,0 +1,19 @@
+========================================
+PromptPrompt Session
+Date: 2025-12-03 11:56:12
+========================================
+
+ORIGINAL PROMPT:
+what's the wether
+
+OPTIMIZED PROMPT:
+You are a weather forecasting expert. 
+Your task is to provide a detailed 7-day weather forecast for Pittsburgh. 
+Include temperature, precipitation, humidity, and any other relevant weather conditions.
+Format your response as a daily breakdown, with each day's forecast clearly separated.
+Include a brief summary at the beginning, highlighting any significant weather events or trends for the week.
+Tone: Neutral and informative.
+Length: Approximately 200-250 words.
+Do not include unnecessary details or speculation.
+Begin your response with "Pittsburgh 7-Day Weather Forecast:"
+========================================

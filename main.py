@@ -8,8 +8,9 @@ from api_client import ModelConnector
 # from user_auth import UserAuth
 from cli import CLI
 from optimizer import PromptOptimizer
-from launcher import ChatLauncher;
-from storage import Storage;
+# from launcher import ChatLauncher
+from storage import Storage
+import weblauncher
 
 # Path to the environment configuration file
 ENV_PATH = ".env"
@@ -122,10 +123,11 @@ def main():
         # Pass the initialized API client to the optimizer
         optimizer = PromptOptimizer(api_client=api)
         storage = Storage()
-        launcher = ChatLauncher()
+        # launcher = ChatLauncher()
+        launcher = weblauncher.WebLauncher()
     except Exception as e:
         print(f"[Error] Failed to initialize optimizer: {e}")
-        print("Hint: Ensure you have a 'prompts' folder with .txt files.")
+        # print("Hint: Ensure you have a 'prompts' folder with .txt files.")
         sys.exit(1)
 
     # --- STEP 4: Launch the CLI (View) ---

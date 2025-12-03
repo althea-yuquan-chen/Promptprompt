@@ -5,7 +5,7 @@
 from rich.console import Console
 from rich.panel import Panel
 from datetime import datetime
-from launcher import ChatLauncher
+#from launcher import ChatLauncher
 
 class CLI:
     # Console manager class for I/O - handles all user interaction
@@ -46,19 +46,19 @@ class CLI:
         # Main method - this is what starts everything
         self.console.print("[bold magenta] Welcome to PromptPrompt! [/bold magenta]")
 
-        # Ask user which AI tool first
-        model_choice = self.get_ai_choice()
+        # # Ask user which AI tool first
+        # model_choice = self.get_ai_choice()
 
-        # Create launcher with their choice
-        self.launcher = ChatLauncher(default_model=model_choice)
+        # # Create launcher with their choice
+        # self.launcher = ChatLauncher(default_model=model_choice)
 
-        # Check if installed
-        if not self.launcher.check_installed():
-            self.console.print(f"\n[red]Error: {self.launcher.chat_tool} is not installed[/red]")
-            self.console.print(f"{self.launcher._get_install_instructions(self.launcher.chat_tool)}")
-            return
+        # # Check if installed
+        # if not self.launcher.check_installed():
+        #     self.console.print(f"\n[red]Error: {self.launcher.chat_tool} is not installed[/red]")
+        #     self.console.print(f"{self.launcher._get_install_instructions(self.launcher.chat_tool)}")
+        #     return
 
-        self.console.print(f"\n[green]✓ {model_choice.upper()} is ready[/green]")
+        # self.console.print(f"\n[green]✓ {model_choice.upper()} is ready[/green]")
 
         # Get the draft prompt (either from parameter or ask user)
         if draft_prompt is None:
@@ -93,20 +93,21 @@ class CLI:
         self.console.print(f"✓ Saved to: {file_path}")
 
         # Launch AI Session
-        #* self.launcher.launch(improved_prompt)
-        self.console.print(f"\nLaunching {model_choice.upper()}...")
         self.launcher.launch(improved_prompt)
+        #* self.launcher.launch(improved_prompt)
+        # self.console.print(f"\nLaunching {model_choice.upper()}...")
+        # self.launcher.launch(improved_prompt)
 
         # Exit message
-        self.console.print("\n" + "="*60)
+        self.console.print("\n" + "-"*60)
         self.console.print("[bold green] PromptPrompt Complete![/bold green]")
         self.console.print("\n[dim]Summary:[/dim]")
         self.console.print(f"   • Original prompt optimized")
-        self.console.print(f"   • AI tool selected: {model_choice.upper()}")
+        # self.console.print(f"   • AI tool selected: {model_choice.upper()}")
         self.console.print(f"   • Prompts saved to ~/.promptprompt/prompts/")
         self.console.print(f"   • AI session launched with optimized prompt")
         self.console.print("\n[dim]Returning terminal control to you...[/dim]")
-        self.console.print("=" * 60 + "\n")
+        self.console.print("-" * 60 + "\n")
 
     def get_draft_prompt(self):
         # Get the user's initial prompt

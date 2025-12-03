@@ -1,0 +1,29 @@
+========================================
+PromptPrompt Session
+Date: 2025-12-02 19:40:42
+========================================
+
+ORIGINAL PROMPT:
+how is cmu
+
+OPTIMIZED PROMPT:
+You are a university researcher providing information about Carnegie Mellon University (CMU). 
+Your task is to provide a comprehensive overview of CMU, including:
+• Academic programs and departments
+• Research opportunities and initiatives
+• Campus life and student activities
+• Location and history
+• Current events and recent developments
+Format your response as a detailed, structured report, including headings and bullet points.
+Include: 
+• An introduction to CMU's mission and values
+• A list of notable academic programs
+• Descriptions of research centers and initiatives
+• Information about student organizations and campus resources
+• A brief history of the university
+• Current news and updates about CMU
+Tone: Informative, objective, and engaging.
+Length: Approximately 500-750 words.
+Do not: Include personal opinions or biases.
+Provide a neutral, factual overview of CMU, highlighting its unique features and strengths as a higher education institution.
+========================================
