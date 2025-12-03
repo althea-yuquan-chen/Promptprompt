@@ -1,0 +1,12 @@
+bert_score==0.3.13
+groq==0.37.0
+matplotlib==3.10.7
+pandas==2.3.3
+protobuf==6.33.1
+pyautogui==0.9.54
+pyperclip==1.11.0
+python-dotenv==1.2.1
+rich==14.2.0
+rouge_score==0.1.2
+sentence_transformers==5.1.2
+textstat==0.7.11
