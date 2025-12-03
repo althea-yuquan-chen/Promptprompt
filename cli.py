@@ -66,12 +66,6 @@ class CLI:
 
         # Generate questions from optimizer
         questions = self.optimizer.clarify(draft_prompt)
-        # These are the hard-coded questions to test for now. Will remove during integration:
-        # questions = [
-        #     "What is the main topic?",
-        #     "Who is your target audience?",
-        #     "What tone should it have?"
-        # ]
 
         # Ask questions
         answers = self.collect_answers(questions)
@@ -132,7 +126,7 @@ class CLI:
         # Loop through each question
         for i, question in enumerate(questions, 1):
             # Ask the question
-            self.console.print(f"[cyan]{i}. {question}[/cyan]")
+            self.console.print(f"[cyan]{question}[/cyan]")
             answer = input("   → ")
 
             # Make sure they answered
@@ -194,14 +188,12 @@ class CLI:
 
             if refinements:
                 # If there are refinements, add them to the prompt
-                # refinement_text = " Also: " + ", ".join(refinements)
-                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
-                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone.{refinement_text}"
+                refinement_text = " Also: " + ", ".join(refinements)
+                improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt + refinement_text, questions, answers)
             else:
                 # First time, no refinements yet
                 improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers)
-                # improved_prompt = f"Write a detailed {draft_prompt} about {answers[0]} for {answers[1]} in a {answers[2]} tone."
-
+                
             self.show_comparison(draft_prompt, improved_prompt)
 
             # Get approval

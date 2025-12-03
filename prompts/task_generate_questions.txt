@@ -101,7 +101,7 @@ HOW MANY QUESTIONS TO ASK
 - Task is extremely straightforward
 - User explicitly provided most information
 
-**NEVER ask fewer than 2 questions unless the request is completely unambiguous**
+**NEVER ask fewer than 2 questions unless the request is completely unambiguous, and NEVER ask more than 6 questions**
 
 ====================
 QUESTION CONSTRUCTION RULES
