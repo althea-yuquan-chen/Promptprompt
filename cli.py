@@ -48,20 +48,6 @@ class CLI:
         # Main method - this is what starts everything
         self.console.print("[bold magenta] Welcome to PromptPrompt! [/bold magenta]")
 
-        # # Ask user which AI tool first
-        # model_choice = self.get_ai_choice()
-
-        # # Create launcher with their choice
-        # self.launcher = ChatLauncher(default_model=model_choice)
-
-        # # Check if installed
-        # if not self.launcher.check_installed():
-        #     self.console.print(f"\n[red]Error: {self.launcher.chat_tool} is not installed[/red]")
-        #     self.console.print(f"{self.launcher._get_install_instructions(self.launcher.chat_tool)}")
-        #     return
-
-        # self.console.print(f"\n[green]✓ {model_choice.upper()} is ready[/green]")
-
         # Get the draft prompt (either from parameter or ask user)
         if draft_prompt is None:
             draft_prompt = self.get_draft_prompt()
@@ -90,16 +76,12 @@ class CLI:
 
         # Launch AI Session
         self.launcher.launch(improved_prompt, claude_code_path)
-        #* self.launcher.launch(improved_prompt)
-        # self.console.print(f"\nLaunching {model_choice.upper()}...")
-        # self.launcher.launch(improved_prompt)
 
         # Exit message
         self.console.print("\n" + "-"*60)
         self.console.print("[bold green] PromptPrompt Complete![/bold green]")
         self.console.print("\n[dim]Summary:[/dim]")
         self.console.print(f"   • Original prompt optimized")
-        # self.console.print(f"   • AI tool selected: {model_choice.upper()}")
         self.console.print(f"   • Prompts saved to ~/.promptprompt/prompts/")
         self.console.print(f"   • AI session launched with optimized prompt")
         self.console.print("\n[dim]Returning terminal control to you...[/dim]")
@@ -119,7 +101,6 @@ class CLI:
 
     def collect_answers(self, questions):
         # Ask clarifying questions and collect answers
-        #* INPUT PROMPT OPTIMIZER: questions = self.optimizer.clarify(draft_prompt)
 
         answers = []
 
@@ -183,10 +164,6 @@ class CLI:
         while True: # Loop until we return (when user approves)
 
             # Generate improved prompt
-            # For now, using fake, improved prompt.
-            #* when integrating take out if/else statement below and add:
-            #* improved_prompt = self.optimizer.generate_optimized_prompt(draft_prompt, questions, answers, refinements)
-            # need to add refinements as the 4th parameter so that is included in the prompt if user want it
 
             if refinements:
                 # If there are refinements, add them to the prompt
