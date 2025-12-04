@@ -3,8 +3,6 @@ This document summarizes open source tools that can support the evaluation of Pr
 1. **Prompt Testing** for building the 30 prompt testing suite  
 2. **Text Evaluation Tools** for comparing model outputs before and after optimization
 
-If you find any problem， please contact me， I will update ：）
-
 # Category A: Prompt Testing
 ## 1.  Promptfoo
 https://github.com/promptfoo/promptfoo
@@ -20,10 +18,10 @@ The prompt benchmarking framework from Microsoft. It can handle many prompts at 
 ## 3. lm-evaluation-harness
 https://github.com/EleutherAI/lm-evaluation-harness/tree/main/tests
 
-I think this basically shows us “this is what a proper evaluation system looks like.” It doesn't help us compare prompts directly，but its task folders, metric files, and evaluation flow may can give us a super clear example of how to build our own tester. We can use its structure。
+This basically shows “this is what a proper evaluation system looks like.” It doesn't help us compare prompts directly，but its task folders, metric files, and evaluation flow may can give us a super clear example of how to build our own tester. We can use its structure。
 
 # Category B: Text Evaluation Tools  
-These tools directly support us comparing outputs generated before and after prompt optimization. Then compute similarity scores, measure quality differences, and run statistical tests.
+These tools directly support us in comparing outputs generated before and after prompt optimization. Then compute similarity scores, measure quality differences, and run statistical tests.
 
 ## 1. sentence-transformers
 https://github.com/huggingface/sentence-transformers/tree/main
@@ -40,8 +38,3 @@ Computes similarity using contextual embeddings， produces precision/recall/F1 
 https://github.com/pltrdy/rouge
 
 Measure how much information overlaps between two texts. Evaluates how much key content appears in both outputs. Maybe helps us check whether the optimized prompt produces more complete or more informative outputs
-
-## 4.textstat  ---- (Readability Metrics)
-https://github.com/textstat/textstat
-
-Evaluates how easy a text is to understand based on vocabulary and sentence complexity. May help quantify whether optimized prompts produce more structured and easier-to-read outputs.
