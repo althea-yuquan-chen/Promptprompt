@@ -22,7 +22,6 @@ Promptprompt/
 ├── api_client.py            # Handles API connections (Groq in use, Gemini, OpenAI, Anthropic also supported if you have the API key).
 ├── cli.py                   # User Interface - Handles inputs, display, and interaction loops.
 ├── optimizer.py             # Core Logic - Generates clarifying questions and optimizes text.
-├── user_auth.py             # [Not in use] Security - Manages user registration, login, and SQLite DB.
 ├── weblauncher.py           # Automation - Opens browser and auto-pastes prompts.
 ├── storage.py               # Saves prompt history to local txt files.
 ├── requirements.txt         # List of Python dependencies.
