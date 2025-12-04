@@ -1,8 +1,9 @@
 import pandas as pd
+import transformers
+transformers.logging.set_verbosity_error()
 import matplotlib.pyplot as plt
 import gzip
 import nltk
-import time
 import tiktoken
 from sentence_transformers import SentenceTransformer, util
 from bert_score import score as bertscore
@@ -15,11 +16,15 @@ nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
 
 # ======================================================
-# Load CSV
+# Load Google Sheets CSV
 # ======================================================
 
-def load_cases(path):
-    df = pd.read_csv(path)
+GOOGLE_SHEET_URL = (
+    "https://docs.google.com/spreadsheets/d/1BETDr9PA-W0zxKLYW-2Bjj5kFzlhbQeDC1Dc963LOjI/export?format=csv"
+)
+
+def load_cases(url):
+    df = pd.read_csv(url)
     cases = []
     for idx, row in df.iterrows():
         cid = idx + 1
@@ -32,7 +37,7 @@ def load_cases(path):
         })
     return cases
 
-FILE_CASES = load_cases("/Users/liujiayi/Downloads/test data - Sheet1.csv")
+FILE_CASES = load_cases(GOOGLE_SHEET_URL)
 
 # ======================================================
 # Metric Functions
@@ -53,7 +58,6 @@ def bert_single(a, b):
 def rouge_single(a, b):
     return rouge.score(a, b)["rougeL"].fmeasure
 
-
 def info_density(text):
     tokens = nltk.word_tokenize(text)
     tags = nltk.pos_tag(tokens)
@@ -73,12 +77,10 @@ def compression_rate(text):
     comp = gzip.compress(raw)
     return len(comp) / len(raw) if len(raw) > 0 else 0
 
-# Token counting
 def count_tokens(text, model="gpt-4o-mini"):
     enc = tiktoken.encoding_for_model(model)
     return len(enc.encode(text))
 
-# Coverage
 def build_coverage_fn(before_list, after_list):
     vec = TfidfVectorizer()
     vec.fit(before_list + after_list)
@@ -88,17 +90,13 @@ def build_coverage_fn(before_list, after_list):
     return cov
 
 # ======================================================
-# ROI using Realistic Model
+# ROI Calculation
 # ======================================================
 
 def compute_roi(df, baseline_attempts=3):
-    # Average semantic score (not "improvement")
     avg_semantic_score = df["output_similarity"].mean() * 100
-
-    # Iteration Reduction = (K - 1) / K
     iter_reduction = (baseline_attempts - 1) / baseline_attempts * 100
 
-    # Token reduction = compare multi-attempt baseline vs single attempt optimized
     avg_before_tokens = df["tokens_before"].mean()
     avg_after_tokens = df["tokens_after"].mean()
 
@@ -132,11 +130,12 @@ def run_tests():
         ob = case["before_output"]
         oa = case["after_output"]
 
-        sim_p = semantic_similarity(pb, pa)
         sim_o = semantic_similarity(ob, oa)
-
         bert_o = bert_single(ob, oa)
         rouge_o = rouge_single(ob, oa)
+
+        read_b = textstat.flesch_reading_ease(ob)
+        read_a = textstat.flesch_reading_ease(oa)
 
         info_b = info_density(ob)
         info_a = info_density(oa)
@@ -192,14 +191,12 @@ def run_tests():
     plt.figure(figsize=(10,5))
     plt.plot(df["id"], df["coverage_before"], marker="o", label="Before")
     plt.plot(df["id"], df["coverage_after"], marker="o", label="After")
-    plt.title("Content Coverage")
+    plt.title("Content Coverage (TF-IDF Features)")
     plt.xlabel("Case ID")
     plt.ylabel("TF-IDF Features")
     plt.legend()
     plt.grid()
     plt.savefig("coverage.png")
-
-
 
     # ============================
     # ROI metrics
