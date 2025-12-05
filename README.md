@@ -66,6 +66,12 @@ python main.py
 
 ## Citations:
 # Seongsu used claudeAI to walk me through how to use rich library, the ordering of the methods, and general debugging.
+# Jennifer used OpenAI ChatGPT to refine and to suggest approaches for token counting and ROI-related token metrics.
+## Data Sources Used in This Project:
+# - User-generated prompts (direct CLI input)
+# - Groq API model outputs:
+#     openai/gpt-oss-20b
+#     llama-3.3-70b-versatile
 
 ## Other sources used:
 # - https://jilltxt.net/llms-fail-at-70-of-simple-office-tasks/#:~:text=The%20code%20is%20on%20Github,and%20autonomously%20automate%20repetitive%20tasks.
