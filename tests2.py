@@ -1,3 +1,12 @@
+# Citation: I used OpenAI ChatGPT to refine this script and to suggest
+# approaches for token counting and ROI-related token metrics.
+
+# Citation: Data Sources Used in This Project:
+# - User-generated prompts (direct CLI input)
+# - Groq API model outputs:
+#     openai/gpt-oss-20b
+#     llama-3.3-70b-versatile
+
 import pandas as pd
 import transformers
 transformers.logging.set_verbosity_error()
@@ -14,10 +23,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 # NLTK Setup
 nltk.download("punkt")
 nltk.download("averaged_perceptron_tagger")
-
-# ======================================================
-# Load Google Sheets CSV
-# ======================================================
 
 GOOGLE_SHEET_URL = (
     "https://docs.google.com/spreadsheets/d/1BETDr9PA-W0zxKLYW-2Bjj5kFzlhbQeDC1Dc963LOjI/export?format=csv"
@@ -39,9 +44,7 @@ def load_cases(url):
 
 FILE_CASES = load_cases(GOOGLE_SHEET_URL)
 
-# ======================================================
 # Metric Functions
-# ======================================================
 
 st_model = SentenceTransformer("all-MiniLM-L6-v2")
 rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
@@ -89,9 +92,7 @@ def build_coverage_fn(before_list, after_list):
         return (v > 0).sum()
     return cov
 
-# ======================================================
 # ROI Calculation
-# ======================================================
 
 def compute_roi(df, baseline_attempts=3):
     avg_semantic_score = df["output_similarity"].mean() * 100
@@ -112,9 +113,7 @@ def compute_roi(df, baseline_attempts=3):
         "avg_time": 0.8
     }
 
-# ======================================================
 # MAIN TEST FUNCTION
-# ======================================================
 
 def run_tests():
     results = []
@@ -170,9 +169,7 @@ def run_tests():
     df.to_csv("evaluation_results_clean.csv", index=False)
     print("Saved evaluation_results_clean.csv")
 
-    # ============================
     # Token usage plot
-    # ============================
 
     plt.figure(figsize=(10, 5))
     plt.plot(df["id"], df["tokens_before"], marker="o", label="Before")
@@ -184,9 +181,7 @@ def run_tests():
     plt.grid()
     plt.savefig("token_savings.png")
 
-    # ============================
     # Coverage plot
-    # ============================
 
     plt.figure(figsize=(10,5))
     plt.plot(df["id"], df["coverage_before"], marker="o", label="Before")
@@ -198,9 +193,7 @@ def run_tests():
     plt.grid()
     plt.savefig("coverage.png")
 
-    # ============================
     # ROI metrics
-    # ============================
 
     roi = compute_roi(df)
     print("\n===== ROI METRICS =====")
