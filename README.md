@@ -83,8 +83,8 @@ Our evaluation includes two clear visualizations that help explain the impact of
 - Content Coverage (TF-IDF Features) — This plot compares the amount of information before and after optimization. The two lines stay very close across all cases, which shows that the optimized answer keeps almost all key content. The optimizer reduces length without losing meaning.
 
 The optimizer shows clear, measurable improvements:
-Semantic quality score: 71.41%
-Iteration reduction: 66.67%
-Token reduction: 65.45%
-Average optimization time: 0.8 seconds
+- Semantic quality score: 71.41%
+- Iteration reduction: 66.67%
+- Token reduction: 65.45%
+- Average optimization time: 0.8 seconds
 These metrics demonstrate that our system produces higher quality prompts, reduces the number of attempts needed, and lowers token costs.
