@@ -65,8 +65,8 @@ python main.py
 **5. Launch:** Once approved, the tool automatically opens your default browser (e.g., ChatGPT) and pastes the optimized prompt for immediate use.
 
 ## Citations:
-Seongsu used claudeAI to walk me through how to use rich library, the ordering of the methods, and general debugging.
-Jennifer used OpenAI ChatGPT to refine and to suggest approaches for token counting and ROI-related token metrics.
+1. Seongsu used claudeAI to walk me through how to use rich library, the ordering of the methods, and general debugging.
+2. Jennifer used OpenAI ChatGPT to refine and to suggest approaches for token counting and ROI-related token metrics.
 ## Data Sources Used in This Project:
 - User-generated prompts (direct CLI input)
 - Groq API model outputs:
