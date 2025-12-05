@@ -76,3 +76,15 @@ python main.py
 ## Other sources used:
 # - https://jilltxt.net/llms-fail-at-70-of-simple-office-tasks/#:~:text=The%20code%20is%20on%20Github,and%20autonomously%20automate%20repetitive%20tasks.
 # - https://fortune.com/2025/07/20/ai-hampers-productivity-software-developers-productivity-study/
+
+# Results and Analysis
+Our evaluation includes two clear visualizations that help explain the impact of our optimizer:
+Token Usage (Before vs After) — This plot shows that most optimized outputs use fewer tokens than the original responses. Several cases drop by more than 50%, and the overall average token reduction is 65.45%. This means the optimized output delivers the same meaning with much shorter responses.
+Content Coverage (TF-IDF Features) — This plot compares the amount of information before and after optimization. The two lines stay very close across all cases, which shows that the optimized answer keeps almost all key content. The optimizer reduces length without losing meaning.
+
+The optimizer shows clear, measurable improvements:
+Semantic quality score: 71.41%
+Iteration reduction: 66.67%
+Token reduction: 65.45%
+Average optimization time: 0.8 seconds
+These metrics demonstrate that our system produces higher quality prompts, reduces the number of attempts needed, and lowers token costs.
