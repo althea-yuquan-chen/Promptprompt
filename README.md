@@ -44,6 +44,47 @@ It will interactively ask for your Groq API Key or Gemini API Key.
 
 It will automatically generate a secure .env file locally.
 
+## 🎯 Prompt Engineering Process
+
+PromptPrompt uses a **3-tier adaptive system** that automatically classifies task complexity and applies research-backed prompting techniques:
+
+### Tier 1: Simple Tasks
+*Examples: "Explain blockchain", "What is machine learning?"*
+
+**Techniques:**
+- **Zero-Shot Prompting** - Direct instruction without examples
+- **Basic Role** - Simple 1-sentence expert persona
+- **Minimal Structure** - Plain text with 2-3 core constraints
+
+### Tier 2: Medium Tasks
+*Examples: "Write LinkedIn posts about leadership", "Python code for data analysis"*
+
+**Techniques:**
+- **Role-Based Prompting** - Detailed expert persona with approach and tone
+- **Contextual Prompting** - Explains audience, purpose, and use case
+- **Few-Shot Prompting** - 2-3 examples showing desired style/format
+- **XML Structure** - Organized sections (role, context, task, constraints)
+
+### Tier 3: Complex Tasks
+*Examples: "Complete content marketing strategy", "Comprehensive research paper"*
+
+**Techniques:**
+- **Advanced Role-Based** - Expert with credentials, philosophy, and methodology
+- **Deep Contextual** - Stakeholder analysis, background, constraints
+- **Few-Shot (Always)** - 3-5 diverse examples covering edge cases
+- **Structured Output** - Explicit templates with required sections
+- **Chain of Thought** - Step-by-step reasoning for complex logic
+- **Guidelines** - 4-6 principles for decision-making and quality
+- **Full XML** - Complete structure with all sections (role, context, task, examples, output_format, constraints, guidelines)
+
+### The 5-Step Workflow
+
+1. **Analyze** - User submits draft, system classifies complexity tier
+2. **Clarify** - AI asks 2-5 targeted questions based on tier
+3. **Integrate** - Answers combined with best practices library
+4. **Optimize** - Appropriate techniques applied automatically
+5. **Refine** - User approves or requests changes in iterative loop
+
 ## 🖥️ Usage
 
 To start the application, simply install dependencies and run the main.py file from your terminal:
@@ -52,21 +93,10 @@ pip install -r requirements.txt
 python main.py
 ```
 
-**The Workflow:**
-
-**1. Draft Input:** Enter a rough idea (e.g., "Write an email to my boss about a raise").
-
-**2. Clarification:** The AI will ask you 3-4 specific questions to understand your context (e.g., "What specific achievements should we highlight?").
-
-**3. Optimization:** The system generates a polished, professional prompt based on prompt engineering best practices.
-
-**4. Approval:** You can approve the result or ask for further refinements (e.g., "Make it more polite").
-
-**5. Launch:** Once approved, the tool automatically opens your default browser (e.g., ChatGPT) and pastes the optimized prompt for immediate use.
-
 ## Citations:
 1. Seongsu used claudeAI to walk me through how to use rich library, the ordering of the methods, and general debugging.
 2. Jennifer used OpenAI ChatGPT to refine and to suggest approaches for token counting and ROI-related token metrics.
+3. Guy Adou, used claude code, for debugging and setting up the prompts and debuggging in other components.
 ## Data Sources Used in This Project:
 - User-generated prompts (direct CLI input)
 - Groq API model outputs:
