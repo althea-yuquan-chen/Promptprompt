@@ -26,9 +26,7 @@ def setup_api_keys():
 
     # Check if core keys exist (Using Groq as the example since it's mandatory/default)
     groq_key = os.getenv("GROQ_API_KEY")
-    #gemini_key = os.getenv("GEMINI_API_KEY")
 
-    # If keys already exist, skip the setup process
     if groq_key :
         return
 
@@ -48,20 +46,6 @@ def setup_api_keys():
         with open(ENV_PATH, "a") as f:
             f.write(f"\nGROQ_API_KEY={new_groq}")
         print("✓ Groq Key saved.")
-
-    # 2. Get Gemini Key (Optional)
-    # print("\nPlease enter your Google Gemini API Key (Optional):")
-    # print("Get key here: https://aistudio.google.com/app/apikey")
-    # new_gemini = getpass("Gemini Key (Press Enter to skip): ").strip()
-
-    # if new_gemini:
-    #     with open(ENV_PATH, "a") as f:
-    #         f.write(f"\nGEMINI_API_KEY={new_gemini}")
-    #     print("✓ Gemini Key saved.")
-
-    # print("\n[Setup Complete] Starting system...\n")
-    
-    # Reload again to ensure the program reads the newly written keys immediately
     load_dotenv(ENV_PATH, override=True)
 
 def main():
@@ -89,36 +73,7 @@ def main():
         print(f"[Critical Error] Failed to connect to AI models: {e}")
         sys.exit(1)
 
-    # # --- STEP 2: User Authentication ---
-    # auth = UserAuth()
-    # current_user = None
-    
-    # while not current_user:
-    #     print("\n--- Authentication Required ---")
-    #     print("1. Login")
-    #     print("2. Register")
-    #     print("3. Exit")
-    #     choice = input("Select an option (1-3): ").strip()
-        
-    #     if choice == '1':
-    #         user = input("Username: ")
-    #         pwd = getpass("Password: ") 
-    #         if auth.login_user(user, pwd):
-    #             current_user = user
-    #     elif choice == '2':
-    #         user = input("New Username: ")
-    #         pwd = getpass("New Password: ")
-    #         if auth.register_user(user, pwd):
-    #             print("Registration successful! Please login.")
-    #     elif choice == '3':
-    #         print("Exiting system. Goodbye!")
-    #         sys.exit(0)
-    #     else:
-    #         print("Invalid choice, please try again.")
-
-    # print(f"\n[System] Welcome, {current_user}!")
-
-    # --- STEP 3: Initialize Business Logic (Optimizer) ---
+    # --- STEP 2: Initialize Business Logic (Optimizer) ---
     print("[System] Loading Optimizer Logic...")
     try:
         # Pass the initialized API client to the optimizer
@@ -131,7 +86,7 @@ def main():
         # print("Hint: Ensure you have a 'prompts' folder with .txt files.")
         sys.exit(1)
 
-    # --- STEP 3.5: Get Claude Code path ---
+    # --- STEP 3: Get Claude Code path ---
     claude_code_path = None
     if launcher.use_claude_code:
         # Load config to check for saved path

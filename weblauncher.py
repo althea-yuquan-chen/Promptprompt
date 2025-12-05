@@ -4,7 +4,7 @@ import platform
 import sys
 import subprocess
 
-# Try to import required libraries
+# Claude AI was used to fic bug in launching claude code and the web browser as well as comments
 try:
     import pyperclip
 except ImportError:
@@ -18,7 +18,6 @@ class WebLauncher:
     """
 
     def __init__(self, use_claude_code=False):
-        # You can change this to "https://gemini.google.com/app" if you prefer
         self.target_url = "https://chatgpt.com/"
         self.use_claude_code = use_claude_code
 
@@ -62,8 +61,7 @@ class WebLauncher:
             print("[Launcher] Starting Claude Code in terminal...")
             print("[Launcher] Launching: " + " ".join([claude_code_path, "--", prompt[:50] + "..."]))
 
-            # Use "--" to separate options from the prompt argument
-            # This prevents special characters in the prompt from being interpreted as options
+            # prevents special characters in the prompt from being interpreted as options
             result = subprocess.run([claude_code_path, "--", prompt], check=False)
 
             if result.returncode == 0:
