@@ -63,3 +63,10 @@ python main.py
 **4. Approval:** You can approve the result or ask for further refinements (e.g., "Make it more polite").
 
 **5. Launch:** Once approved, the tool automatically opens your default browser (e.g., ChatGPT) and pastes the optimized prompt for immediate use.
+
+## Citations:
+# Seongsu used claudeAI to walk me through how to use rich library, the ordering of the methods, and general debugging.
+
+## Other sources used:
+# - https://jilltxt.net/llms-fail-at-70-of-simple-office-tasks/#:~:text=The%20code%20is%20on%20Github,and%20autonomously%20automate%20repetitive%20tasks.
+# - https://fortune.com/2025/07/20/ai-hampers-productivity-software-developers-productivity-study/
